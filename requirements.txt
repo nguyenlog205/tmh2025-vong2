@@ -1,4 +1,9 @@
 numpy==2.2.6
 matplotlib==3.10.5
-pandas 
-beautifulsoup4
+
+# Search Engine
+google==3.0.0
+selenium==4.21.0
+webdriver-manager==3.8.6
+dotenv==0.9.9
+
