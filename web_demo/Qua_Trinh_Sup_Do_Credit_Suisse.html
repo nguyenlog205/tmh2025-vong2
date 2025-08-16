@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phân Tích Tương Tác: Sự Sụp Đổ Của Credit Suisse</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Neutral Tones -->
+    <!-- Application Structure Plan: Ứng dụng được cấu trúc theo một câu chuyện tường thuật, dẫn dắt người dùng từ bối cảnh vĩ mô toàn cầu đến các sự kiện nội bộ, phân tích dữ liệu định lượng và cuối cùng là các bài học rút ra. Cấu trúc này (Bối cảnh -> Dòng thời gian -> Dữ liệu -> Phân tích -> Kết luận) được chọn để tối ưu hóa sự hiểu biết, cho phép người dùng khám phá câu chuyện một cách logic. Thanh điều hướng cố định giúp dễ dàng chuyển đổi giữa các phần, trong khi các yếu tố tương tác như biểu đồ có thể chuyển đổi và dòng thời gian có thể nhấp vào khuyến khích sự khám phá chủ động thay vì tiêu thụ thụ động. -->
+    <!-- Visualization & Content Choices: Báo cáo -> Mục tiêu -> Phương pháp -> Tương tác -> Lý do. 1. Dòng thời gian khủng hoảng -> Hiểu trình tự sự kiện -> Dòng thời gian dọc -> Nhấp để xem chi tiết -> Trực quan hóa en-US một cách tuần tự các sai lầm và phản ứng thị trường. 2. Nghịch lý Định lượng (CET1 vs. CDS/Cổ phiếu) -> So sánh tín hiệu thị trường và tín hiệu quy định -> Biểu đồ đường hai trục -> Nút chuyển đổi dữ liệu -> Làm nổi bật sự khác biệt nguy hiểm giữa an toàn "trên giấy tờ" và thực tế thị trường. 3. Mô hình kinh doanh -> Hiểu các nguồn rủi ro nội bộ -> Sơ đồ 4 khối -> Nhấp để làm nổi bật -> Phân tách các bộ phận kinh doanh và chỉ ra sự lây lan rủi ro từ mảng Ngân hàng Đầu tư. Tất cả các biểu đồ sử dụng Chart.js trên Canvas. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fdfcfb;
+            color: #333;
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #c8102e;
+            border-bottom-color: #c8102e;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -31px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #fff;
+            border: 4px solid #c8102e;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 450px;
+            }
+        }
+        .kpi-card {
+            transition: all 0.3s ease;
+            border: 1px solid #e5e7eb;
+        }
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .section-fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .section-fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <h1 class="text-xl font-bold text-gray-800">Credit Suisse</h1>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a onclick="scrollToSection('overview')" class="nav-link text-gray-600 hover:text-red-700 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Tổng Quan</a>
+                        <a onclick="scrollToSection('timeline')" class="nav-link text-gray-600 hover:text-red-700 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Dòng Thời Gian</a>
+                        <a onclick="scrollToSection('dashboard')" class="nav-link text-gray-600 hover:text-red-700 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Bảng Điều Khiển</a>
+                        <a onclick="scrollToSection('analysis')" class="nav-link text-gray-600 hover:text-red-700 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Phân Tích</a>
+                        <a onclick="scrollToSection('lessons')" class="nav-link text-gray-600 hover:text-red-700 px-3 py-2 rounded-md text-sm font-medium border-b-2 border-transparent">Bài Học</a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+
+        <section id="overview" class="text-center mb-16 md:mb-24 section-fade-in">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 leading-tight mb-4">
+                Sự Sụp Đổ Của Một Gã Khổng Lồ
+            </h1>
+            <p class="max-w-3xl mx-auto text-lg md:text-xl text-gray-600">
+                Một phân tích tương tác về cuộc khủng hoảng của Credit Suisse, khám phá sự kết hợp chí mạng giữa rủi ro nội tại, áp lực vĩ mô và sự xói mòn niềm tin đã hạ bệ một trong những định chế tài chính lớn nhất thế giới.
+            </p>
+        </section>
+
+        <section id="timeline" class="mb-16 md:mb-24 section-fade-in">
+            <h2 class="text-3xl font-bold text-center mb-12">Dòng Thời Gian Tương Tác Của Cuộc Khủng Hoảng</h2>
+            <div class="relative max-w-2xl mx-auto border-l-2 border-gray-200 pl-8">
+            </div>
+        </section>
+
+        <section id="dashboard" class="mb-16 md:mb-24 section-fade-in">
+            <h2 class="text-3xl font-bold text-center mb-4">Bảng Điều Khiển Định Lượng</h2>
+            <p class="text-center text-gray-600 max-w-3xl mx-auto mb-12">Khám phá "Nghịch lý Định lượng": trong khi các chỉ số an toàn theo quy định có vẻ ổn định, các tín hiệu từ thị trường lại kể một câu chuyện hoàn toàn khác về rủi ro sắp xảy ra. Tương tác với các biểu đồ để thấy rõ sự khác biệt.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 text-center">
+                <div class="kpi-card bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-lg font-semibold text-gray-500">Lỗ Trước Thuế 2022</h3>
+                    <p class="text-4xl font-bold text-red-600">-7.3 Tỷ CHF</p>
+                </div>
+                <div class="kpi-card bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-lg font-semibold text-gray-500">Dòng Tiền Rút Ra (Q4 2022)</h3>
+                    <p class="text-4xl font-bold text-orange-500">-110.5 Tỷ CHF</p>
+                </div>
+                <div class="kpi-card bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-lg font-semibold text-gray-500">Tỷ Lệ Vốn CET1 (Cuối 2022)</h3>
+                    <p class="text-4xl font-bold text-green-600">14.1%</p>
+                </div>
+            </div>
+
+            <div class="bg-white p-4 sm:p-6 md:p-8 rounded-xl shadow-lg">
+                <div class="flex flex-wrap justify-center gap-2 mb-6">
+                    <button id="btn-stock-cds" class="px-4 py-2 text-sm font-medium bg-red-600 text-white rounded-md shadow-sm">Cổ Phiếu vs. CDS</button>
+                    <button id="btn-outflows" class="px-4 py-2 text-sm font-medium bg-gray-200 text-gray-700 rounded-md">Dòng Tiền Rút Ra</button>
+                    <button id="btn-loss" class="px-4 py-2 text-sm font-medium bg-gray-200 text-gray-700 rounded-md">Lỗ Trước Thuế</button>
+                </div>
+                <div class="chart-container">
+                    <canvas id="mainChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="analysis" class="mb-16 md:mb-24 section-fade-in">
+            <h2 class="text-3xl font-bold text-center mb-4">Phân Tích Mô Hình Kinh Doanh</h2>
+            <p class="text-center text-gray-600 max-w-3xl mx-auto mb-12">Hoạt động của Credit Suisse được xây dựng trên bốn trụ cột. Tuy nhiên, sự mất cân bằng và rủi ro từ mảng Ngân hàng Đầu tư đã lây lan, phá hủy danh tiếng và niềm tin - tài sản cốt lõi của các mảng kinh doanh khác. Nhấp vào từng khối để xem chi tiết.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div id="pillar-ib" class="pillar-card p-6 bg-white rounded-lg shadow-md cursor-pointer border-2 border-transparent transition-all duration-300">
+                    <h3 class="text-xl font-bold mb-2">🏦 Ngân hàng Đầu tư (IB)</h3>
+                    <p class="text-gray-600">Tâm chấn của rủi ro. Chịu trách nhiệm cho các khoản lỗ khổng lồ (Archegos) và có khẩu vị rủi ro cao, không còn phù hợp với môi trường kinh tế mới.</p>
+                </div>
+                <div id="pillar-wm" class="pillar-card p-6 bg-white rounded-lg shadow-md cursor-pointer border-2 border-transparent transition-all duration-300">
+                    <h3 class="text-xl font-bold mb-2">💎 Quản lý Gia sản (WM)</h3>
+                    <p class="text-gray-600">"Viên ngọc quý" của ngân hàng, nhưng phụ thuộc hoàn toàn vào danh tiếng và niềm tin - những thứ đã bị phá hủy bởi các bê bối từ mảng IB.</p>
+                </div>
+                <div id="pillar-am" class="pillar-card p-6 bg-white rounded-lg shadow-md cursor-pointer border-2 border-transparent transition-all duration-300">
+                    <h3 class="text-xl font-bold mb-2">📈 Quản lý Tài sản (AM)</h3>
+                    <p class="text-gray-600">Một mảng kinh doanh mạnh, nhưng cũng bị ảnh hưởng bởi vụ bê bối Greensill. Là một tài sản có giá trị trong mắt đối thủ UBS.</p>
+                </div>
+                <div id="pillar-sb" class="pillar-card p-6 bg-white rounded-lg shadow-md cursor-pointer border-2 border-transparent transition-all duration-300">
+                    <h3 class="text-xl font-bold mb-2">🇨🇭 Ngân hàng Thụy Sĩ (SB)</h3>
+                    <p class="text-gray-600">Nền tảng ổn định và có lợi nhuận tại thị trường nội địa. Tuy nhiên, quy mô quá nhỏ để bù đắp cho các khoản lỗ khổng lồ ở cấp tập đoàn.</p>
+                </div>
+            </div>
+             <div id="pillar-details" class="mt-8 p-6 bg-gray-50 rounded-lg min-h-[100px] text-gray-700">
+                <p>Chọn một trụ cột kinh doanh để xem phân tích chi tiết về vai trò và tác động của nó trong cuộc khủng hoảng.</p>
+            </div>
+        </section>
+
+        <section id="lessons" class="text-center section-fade-in">
+            <h2 class="text-3xl font-bold mb-4">Bài Học Rút Ra</h2>
+            <p class="text-center text-gray-600 max-w-3xl mx-auto mb-12">Sự sụp đổ của Credit Suisse không chỉ là một thất bại của riêng một ngân hàng, mà còn là một lời cảnh báo sâu sắc cho toàn bộ hệ thống tài chính toàn cầu.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-bold mb-2">Văn Hóa Rủi Ro > Vốn</h3>
+                    <p class="text-gray-600">Một văn hóa quản trị rủi ro yếu kém có thể phá hủy một ngân hàng nhanh hơn nhiều so với việc thiếu vốn. Các bê bối lặp đi lặp lại là triệu chứng của một căn bệnh hệ thống.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-bold mb-2">Niềm Tin là Tài Sản Cốt Lõi</h3>
+                    <p class="text-gray-600">Trong kỷ nguyên số, niềm tin có thể bốc hơi chỉ trong vài giờ. Dòng tiền rút ra ồ ạt cho thấy không có bộ đệm vốn nào đủ lớn để chống lại một cuộc khủng hoảng niềm tin.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-xl font-bold mb-2">Hạn Chế Của Quy Định</h3>
+                    <p class="text-gray-600">Các chỉ số theo quy định như CET1 là các chỉ báo trễ và tĩnh. Thị trường, thông qua giá cổ phiếu và CDS, đã đưa ra cảnh báo sớm hơn và chính xác hơn về thảm họa sắp xảy ra.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const timelineData = [
+            {
+                date: "Tháng 3, 2021",
+                title: "Sụp đổ của Greensill Capital",
+                description: "Credit Suisse chịu tổn thất nặng nề về danh tiếng và tài chính khi các quỹ tài trợ chuỗi cung ứng trị giá 10 tỷ USD mà họ quản lý bị sụp đổ."
+            },
+            {
+                date: "Tháng 4, 2021",
+                title: "Thảm họa Archegos",
+                description: "Ngân hàng lỗ 5.5 tỷ USD do sự sụp đổ của quỹ phòng hộ Archegos Capital. Khoản lỗ này lớn hơn bất kỳ ngân hàng nào khác, phơi bày sự yếu kém nghiêm trọng trong quản trị rủi ro."
+            },
+            {
+                date: "Tháng 1, 2022",
+                title: "Chủ tịch từ chức",
+                description: "Chủ tịch António Horta-Osório, người được kỳ vọng sẽ cải tổ văn hóa rủi ro, phải từ chức sau chưa đầy một năm vì vi phạm quy định cách ly COVID-19."
+            },
+            {
+                date: "Tháng 7, 2022",
+                title: "CEO mới và Tái cấu trúc",
+                description: "CEO Thomas Gottstein từ chức. Ulrich Körner, một chuyên gia tái cấu trúc, được bổ nhiệm và công bố một kế hoạch 'rà soát chiến lược toàn diện'."
+            },
+            {
+                date: "Tháng 10, 2022",
+                title: "Khủng hoảng Niềm tin & Rút vốn ồ ạt",
+                description: "Tin đồn trên mạng xã hội gây ra một cuộc khủng hoảng niềm tin. Phí CDS tăng vọt. Khách hàng rút ra 110.5 tỷ CHF trong Quý 4, một con số thảm khốc."
+            },
+            {
+                date: "Tháng 10, 2022 (cuối tháng)",
+                title: "Nỗ lực Tăng vốn",
+                description: "Ngân hàng công bố kế hoạch tái cấu trúc triệt để và huy động 4 tỷ CHF vốn mới. Ngân hàng Quốc gia Ả Rập Xê Út trở thành nhà đầu tư lớn."
+            },
+            {
+                date: "Đầu tháng 3, 2023",
+                title: "Hiệu ứng lây lan từ SVB",
+                description: "Sự sụp đổ của Silicon Valley Bank tại Mỹ gây ra một làn sóng hoảng loạn toàn cầu. Các nhà đầu tư tìm kiếm 'mắt xích yếu' tiếp theo, và Credit Suisse là mục tiêu rõ ràng."
+            },
+            {
+                date: "15 tháng 3, 2023",
+                title: "Đòn chí mạng",
+                description: "Nhà đầu tư lớn nhất, Ngân hàng Quốc gia Ả Rập Xê Út, tuyên bố 'hoàn toàn không' bơm thêm vốn. Niềm tin thị trường hoàn toàn sụp đổ."
+            },
+            {
+                date: "19 tháng 3, 2023",
+                title: "Cuộc Giải cứu Lịch sử",
+                description: "Để ngăn chặn một cuộc khủng hoảng toàn cầu, chính phủ Thụy Sĩ đã dàn xếp để UBS mua lại Credit Suisse với giá 3.25 tỷ USD, đặt dấu chấm hết cho một định chế 167 năm tuổi."
+            }
+        ];
+
+        const pillarDetailsData = {
+            "pillar-ib": {
+                title: "🏦 Ngân hàng Đầu tư (IB)",
+                description: "Đây là nguồn gốc của hầu hết các vấn đề. Với văn hóa chấp nhận rủi ro cao để theo đuổi lợi nhuận, mảng IB đã gây ra các khoản lỗ khổng lồ từ Archegos và các vụ kiện tụng khác. Hoạt động kém hiệu quả trong môi trường lãi suất tăng đã liên tục bào mòn lợi nhuận của toàn tập đoàn. Nỗ lực tái cấu trúc nhằm thu hẹp bộ phận này đã đến quá muộn."
+            },
+            "pillar-wm": {
+                title: "💎 Quản lý Gia sản (WM)",
+                description: "Vốn là động lực tăng trưởng và lợi nhuận chính, mảng WM hoạt động dựa trên sự tin tưởng tuyệt đối của khách hàng. Khi các bê bối từ mảng IB làm tổn hại danh tiếng của toàn bộ thương hiệu Credit Suisse, những khách hàng giàu có đã nhanh chóng mất niềm tin và rút tài sản của họ đi nơi khác. Đây chính là nguồn gốc của dòng tiền rút ra khổng lồ vào cuối năm 2022."
+            },
+            "pillar-am": {
+                title: "📈 Quản lý Tài sản (AM)",
+                description: "Mặc dù là một mảng kinh doanh vững chắc, AM cũng không tránh khỏi bị ảnh hưởng bởi sự suy giảm danh tiếng chung, đặc biệt là sau vụ bê bối Greensill. Tuy nhiên, nó vẫn là một tài sản hấp dẫn, và việc sáp nhập với bộ phận tương ứng của UBS đã tạo ra một gã khổng lồ quản lý tài sản mới ở châu Âu."
+            },
+            "pillar-sb": {
+                title: "🇨🇭 Ngân hàng Thụy Sĩ (SB)",
+                description: "Đây là bộ phận ổn định và đáng tin cậy nhất, phục vụ khách hàng bán lẻ và doanh nghiệp tại Thụy Sĩ. Nó hoạt động tốt và có lợi nhuận ổn định. Tuy nhiên, sự thành công của nó không đủ lớn để bù đắp cho những thiệt hại khổng lồ về tài chính và danh tiếng do các bộ phận khác gây ra. Sự ổn định của nó đã bị lu mờ bởi cuộc khủng hoảng ở cấp tập đoàn."
+            }
+        };
+
+        const chartData = {
+            stock_cds: {
+                labels: ['Q1 21', 'Q2 21', 'Q3 21', 'Q4 21', 'Q1 22', 'Q2 22', 'Q3 22', 'Q4 22', 'Mar 23'],
+                datasets: [
+                    {
+                        label: 'Giá Cổ Phiếu (CHF)',
+                        data: [12.5, 10.1, 9.8, 9.0, 7.5, 5.5, 4.0, 2.8, 0.8],
+                        borderColor: '#3b82f6',
+                        backgroundColor: '#3b82f6',
+                        yAxisID: 'y',
+                        tension: 0.1
+                    },
+                    {
+                        label: 'Phí CDS 5 năm (bps)',
+                        data: [55, 60, 58, 70, 100, 250, 290, 350, 800],
+                        borderColor: '#ef4444',
+                        backgroundColor: '#ef4444',
+                        yAxisID: 'y1',
+                        tension: 0.1
+                    }
+                ]
+            },
+            outflows: {
+                labels: ['Q1 22', 'Q2 22', 'Q3 22', 'Q4 22'],
+                datasets: [{
+                    label: 'Dòng Tiền Ròng Rút Ra (Tỷ CHF)',
+                    data: [-7.9, 7.7, 12.9, 110.5],
+                    backgroundColor: (context) => {
+                        const value = context.dataset.data[context.dataIndex];
+                        return value > 50 ? '#ef4444' : '#f97316';
+                    },
+                }]
+            },
+            loss: {
+                labels: ['Q1 22', 'Q2 22', 'Q3 22', 'Q4 22'],
+                datasets: [{
+                    label: 'Lỗ Trước Thuế (Tỷ CHF)',
+                    data: [0.4, 1.6, 0.3, 1.3],
+                    backgroundColor: '#dc2626',
+                }]
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const timelineContainer = document.querySelector('#timeline .relative');
+            timelineData.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'mb-8 timeline-item relative';
+                div.innerHTML = `
+                    <div class="ml-8">
+                        <p class="text-sm text-gray-500">${item.date}</p>
+                        <h3 class="text-lg font-semibold text-gray-800">${item.title}</h3>
+                        <p class="text-gray-600 mt-1">${item.description}</p>
+                    </div>
+                `;
+                timelineContainer.appendChild(div);
+            });
+
+            const pillarCards = document.querySelectorAll('.pillar-card');
+            const pillarDetailsContainer = document.getElementById('pillar-details');
+            pillarCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    pillarCards.forEach(c => c.classList.remove('border-red-500', 'bg-red-50'));
+                    card.classList.add('border-red-500', 'bg-red-50');
+                    const pillarId = card.id;
+                    const details = pillarDetailsData[pillarId];
+                    pillarDetailsContainer.innerHTML = `
+                        <h4 class="text-lg font-bold mb-2">${details.title}</h4>
+                        <p>${details.description}</p>
+                    `;
+                });
+            });
+            
+            setupIntersectionObserver();
+            initChart();
+        });
+
+        let mainChart;
+        const ctx = document.getElementById('mainChart').getContext('2d');
+
+        function initChart() {
+            const config = {
+                type: 'line',
+                data: chartData.stock_cds,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: { display: true, text: 'Giá Cổ Phiếu (CHF)' }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            title: { display: true, text: 'Phí CDS (bps)' },
+                            grid: { drawOnChartArea: false }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += context.parsed.y + (context.dataset.yAxisID === 'y' ? ' CHF' : ' bps');
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            mainChart = new Chart(ctx, config);
+        }
+
+        function updateChart(type) {
+            mainChart.destroy();
+            let config;
+            if (type === 'stock_cds') {
+                config = {
+                    type: 'line',
+                    data: chartData.stock_cds,
+                    options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false }, scales: { y: { type: 'linear', display: true, position: 'left', title: { display: true, text: 'Giá Cổ Phiếu (CHF)' } }, y1: { type: 'linear', display: true, position: 'right', title: { display: true, text: 'Phí CDS (bps)' }, grid: { drawOnChartArea: false } } }, plugins: { tooltip: { callbacks: { label: function(context) { let label = context.dataset.label || ''; if (label) { label += ': '; } if (context.parsed.y !== null) { label += context.parsed.y + (context.dataset.yAxisID === 'y' ? ' CHF' : ' bps'); } return label; } } } } }
+                };
+            } else {
+                config = {
+                    type: 'bar',
+                    data: chartData[type],
+                    options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, title: { display: true, text: 'Tỷ CHF' } } }, plugins: { legend: { display: false } } }
+                };
+            }
+            mainChart = new Chart(ctx, config);
+        }
+
+        const chartButtons = [
+            { id: 'btn-stock-cds', type: 'stock_cds' },
+            { id: 'btn-outflows', type: 'outflows' },
+            { id: 'btn-loss', type: 'loss' }
+        ];
+
+        chartButtons.forEach(btnInfo => {
+            const button = document.getElementById(btnInfo.id);
+            button.addEventListener('click', () => {
+                updateChart(btnInfo.type);
+                chartButtons.forEach(b => {
+                    const el = document.getElementById(b.id);
+                    el.classList.remove('bg-red-600', 'text-white');
+                    el.classList.add('bg-gray-200', 'text-gray-700');
+                });
+                button.classList.add('bg-red-600', 'text-white');
+                button.classList.remove('bg-gray-200', 'text-gray-700');
+            });
+        });
+
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+        
+        function setupIntersectionObserver() {
+            const sections = document.querySelectorAll('.section-fade-in');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        }
+
+    </script>
+</body>
+</html>
