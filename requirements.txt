@@ -12,3 +12,4 @@ pandas
 # notebook env
 ipykernel
 ipython
+openpyxl
