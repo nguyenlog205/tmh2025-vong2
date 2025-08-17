@@ -1,5 +1,6 @@
 numpy==2.2.6
 matplotlib==3.10.5
+seaborn 
 
 # Search Engine
 google==3.0.0
@@ -8,3 +9,6 @@ webdriver-manager==3.8.6
 dotenv==0.9.9
 pandas
 
+# notebook env
+ipykernel
+ipython
