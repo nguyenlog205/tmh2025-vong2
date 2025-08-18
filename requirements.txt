@@ -16,3 +16,4 @@ openpyxl
 
 # machine learning
 scikit-learn
+lightgbm
