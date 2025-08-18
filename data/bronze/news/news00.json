@@ -1,0 +1,494 @@
+[
+    {
+        "title": "Tin đồn thất thiệt lan truyền ảnh hưởng Credit Suisse",
+        "date": "15-10-2022",
+        "description": "Các tờ báo kinh tế lớn trên thế giới đều chia sẻ nhận định chung về Credit Suisse rằng các lời đồn đại lan truyền trên mạng xã hội đang gây ảnh hưởng tiêu cực đến uy tín của ngân hàng.",     
+        "mark": -4
+    },
+    {
+        "title": "COO Credit Suisse từ chức vì scandal gián điệp",
+        "date": "03-10-2019",
+        "description": "Giám đốc vận hành (COO) của Credit Suisse, Pierre-Olivier Bouée, đã từ chức sau khi một cuộc điều tra nội bộ cho thấy ông là người đã sắp xếp việc giám sát một cựu nhân viên, gây ra một scandal gián điệp. Sự việc này làm ảnh hưởng nghiêm trọng đến uy tín của ngân hàng.",
+        "mark": -4
+    },
+    {
+        "title": "Credit Suisse vướng kiện tụng, khủng hoảng do Greensill",
+        "date": "18-04-2021",
+        "description": "Ngân hàng Credit Suisse lại vướng vào kiện tụng liên quan đến quản lý rủi ro và đã rơi vào khủng hoảng sau sự sụp đổ của quỹ Greensill.",
+        "mark": -5
+    },
+    {
+        "title": "Credit Suisse bị rút 68 tỷ USD trong quý 1/2023",
+        "date": "25-04-2023",
+        "description": "Trong quý 1/2023, Credit Suisse báo cáo lượng tiền gửi trị giá 61 tỷ franc Thụy Sỹ (tương đương 68 tỷ USD) đã bị rút khỏi ngân hàng, theo báo cáo ngày 24/4 của chính ngân hàng này. Sự kiện này cho thấy mức độ mất niềm tin nghiêm trọng của khách hàng vào ngân hàng.",
+        "mark": -5
+    },
+    {
+        "title": "Credit Suisse ghi nhận lỗ kỷ lục, dấy lên lo ngại vỡ nợ", 
+        "date": "16-03-2023", 
+        "description": "Ngân hàng Credit Suisse ghi nhận mức lỗ ròng gần 7,3 tỷ franc Thụy Sĩ (7,9 tỷ USD), mức kỷ lục kể từ khủng hoảng tài chính năm 2008. Tình hình này đã dấy lên lo ngại về khả năng vỡ nợ và bị so sánh với sự sụp đổ của Silicon Valley Bank, gây ảnh hưởng nghiêm trọng đến uy tín của ngân hàng.", 
+        "mark": -5
+    },
+    {
+        "title": "UBS thiệt hại 17 tỷ USD sau vụ giải cứu Credit Suisse",
+        "date": "17-05-2023",
+        "description": "UBS Group AG dự kiến sẽ chịu khoản phí lên tới 17 tỷ USD sau thương vụ tiếp quản Credit Suisse Group AG. Khoản thiệt hại lớn này từ việc giải cứu và sáp nhập cho thấy tình hình tài chính cực kỳ nghiêm trọng của Credit Suisse, ảnh hưởng sâu sắc đến uy tín và niềm tin của thị trường vào ngân hàng này.",
+        "mark": -5
+    },
+    {
+        "title": "Credit Suisse bị UBS sáp nhập: Cú sốc uy tín",
+        "date": "23-03-2023",
+        "description": "Hai ngân hàng lớn nhất Thụy Sĩ, UBS và Credit Suisse, đang đàm phán về một thỏa thuận mua lại và sáp nhập. Động thái này từ lâu được xem là không thể tưởng tượng được, gây ra 'nhát cứa' vào danh tiếng ổn định của Thụy Sĩ và đặc biệt là uy tín của Credit Suisse.",
+        "mark": -5
+    },
+    {
+        "title": "Cổ phiếu Credit Suisse chạm đáy lịch sử, dấy lên lo ngại vỡ nợ",
+        "date": "15-03-2023",
+        "description": "Cổ phiếu của Credit Suisse đã giảm xuống mức thấp kỷ lục do tin đồn ngân hàng sắp vỡ nợ. Ngân hàng lớn thứ 2 Thụy Sĩ này đã phải đối mặt với nhiều vụ bê bối, thay đổi nhân sự cấp cao và các vấn đề pháp lý trong vài năm qua, dẫn đến tình hình khó khăn nghiêm trọng.",
+        "mark": -5
+    },
+    {
+        "title": "Thị trường tích cực sau lo ngại Credit Suisse vỡ nợ",
+        "date": "16-03-2023",
+        "description": "Thị trường chứng khoán, cụ thể là Nasdaq, đã tăng nhẹ trong phiên giao dịch ngày 15/3, cho thấy dấu hiệu tích cực và sự bình tĩnh trở lại của thị trường trước thông tin Credit Suisse đứng trước nguy cơ vỡ nợ.",
+        "mark": 2
+    },
+    {
+        "title": "Ant Group dẫn đầu đấu thầu đơn vị chứng khoán Credit Suisse Trung Quốc",
+        "date": "27-02-2024",
+        "description": "Ant Group, một chi nhánh của Alibaba Group Holding Limited, đã vượt qua Citadel Securities để dẫn đầu cuộc đấu thầu giành quyền kiểm soát đơn vị chứng khoán của Credit Suisse tại Trung Quốc. Việc Credit Suisse tiến hành thoái vốn khỏi đơn vị này cho thấy sự tái cơ cấu hoặc thu hẹp quy mô hoạt động tại thị trường trọng điểm, điều này có thể phản ánh những thách thức nội bộ hoặc chiến lược rút lui.", 
+        "mark": -2
+    },
+    {
+        "title": "Cú chốt deal lịch sử: UBS mua lại Credit Suisse",
+        "date": "20-03-2023",
+        "description": "Ngân hàng UBS đã đạt thỏa thuận mua lại Credit Suisse với giá 3,2 tỷ USD dưới sự thúc đẩy của các cơ quan Thụy Sỹ. Thương vụ này được Ngân hàng Trung ương Thụy Sỹ cam kết cho vay 100 tỷ Francs (108 tỷ USD) để hỗ trợ. Điều này cho thấy tình hình tài chính cực kỳ khó khăn của Credit Suisse, cần sự can thiệp quy mô lớn của nhà nước và dẫn đến việc ngân hàng mất đi tính độc lập.",
+        "mark": -5
+    },
+    {
+        "title": "Credit Suisse bị sáp nhập dẫn đến UBS lập kỷ lục lợi nhuận",
+        "date": "04-09-2023",
+        "description": "Ngân hàng Credit Suisse đã không còn tồn tại độc lập sau khi được UBS tiếp quản. Việc UBS báo cáo khoản lợi nhuận kỷ lục 29 tỷ USD sau sáp nhập cho thấy Credit Suisse đã bị thâu tóm trong tình trạng khó khăn, và giá trị tài sản của Credit Suisse đã đóng góp vào lợi nhuận của ngân hàng tiếp quản. Điều này phản ánh một kết cục tiêu cực cho sự độc lập và uy tín của Credit Suisse.",
+        "mark": -5
+    },
+    {
+        "title": "Giám sát trưởng Credit Suisse từ chức",
+        "date": "24-10-2022",
+        "description": "Giám sát trưởng (CCO) Rafael Lopez Lorenzo của Credit Suisse dự kiến rời công ty trong vài tuần tới, sau hơn 1 năm giữ chức vụ. Việc một nhân sự cấp cao rời đi, đặc biệt là vị trí quan trọng như CCO, cho thấy sự bất ổn trong ban lãnh đạo cấp cao và có thể gây lo ngại về quản trị và tuân thủ.",
+        "mark": -3
+    },
+    {
+        "title": "Credit Suisse bị điều tra hình sự sau sáp nhập",
+        "date": "03-04-2023",
+        "description": "Cơ quan Công tố Liên bang Thụy Sỹ đã mở một cuộc điều tra hình sự liên quan đến vụ sáp nhập Credit Suisse vào UBS. Cuộc sáp nhập này diễn ra 'nhằm tránh một cuộc khủng hoảng trong hệ thống tài chính của Thụy Sỹ', cho thấy tình trạng tài chính của Credit Suisse đã rất tồi tệ trước đó.",
+        "mark": -5
+    },
+    {
+        "title": "UBS hoàn tất tiếp quản Credit Suisse",
+        "date": "12-06-2023",
+        "description": "Ngân hàng Thụy Sĩ UBS đã chính thức hoàn tất việc tiếp quản đối thủ Credit Suisse. Sự kiện này đánh dấu sự kết thúc của một kỷ nguyên đối với Credit Suisse như một ngân hàng độc lập, thường là kết quả của các vấn đề tài chính nghiêm trọng và một tổn thất lớn đối với uy tín và thương hiệu của ngân hàng.",
+        "mark": -5
+    },
+    {
+        "title": "UBS đối mặt án phạt sau thâu tóm Credit Suisse",
+        "date": "20-06-2023",
+        "description": "Ngân hàng UBS có thể đối diện mức phạt hàng trăm triệu USD ở Anh và Mỹ. Thông tin này xuất hiện sau khi UBS hoàn tất thâu tóm Credit Suisse, ngụ ý rằng thương vụ sáp nhập này mang lại rủi ro hoặc vấn đề pháp lý lớn cho bên mua, điều này gián tiếp phản ánh tiêu cực về tình trạng và các vấn đề tồn đọng của Credit Suisse tại thời điểm sáp nhập.",
+        "mark": -3
+    },
+    {
+        "title": "Credit Suisse báo lỗ khổng lồ, công bố kế hoạch cải tổ toàn diện",
+        "date": "27-10-2022",
+        "description": "Ngân hàng Credit Suisse công bố khoản lỗ hơn 4 tỷ USD trong quý 3/2022, tệ hơn đáng kể so với ước tính của các nhà phân tích, đồng thời tiết lộ kế hoạch cải tổ toàn diện.",
+        "mark": -5
+    },
+    {
+        "title": "UBS thâu tóm khẩn cấp Credit Suisse thúc đẩy FINMA siết chặt quản lý",
+        "date": "20-12-2023",
+        "description": "Việc UBS Group AG mua lại khẩn cấp Credit Suisse vào đầu năm 2023 đã thúc đẩy FINMA, cơ quan giám sát tài chính Thụy Sĩ, tìm kiếm quyền quản lý mở rộng và mạnh mẽ hơn. Sự kiện này cho thấy mức độ nghiêm trọng của vấn đề tại Credit Suisse, dẫn đến một thương vụ giải cứu khẩn cấp.",
+        "mark": -5
+    },
+    {
+        "title": "Chi phí giải cứu Credit Suisse",
+        "date": "22-03-2023",
+        "description": "Chính phủ Thụy Sĩ đã phải chi một khoản tiền khổng lồ để giải cứu Credit Suisse, ước tính mỗi người dân Thụy Sĩ gánh 13.500 USD, cho thấy mức độ nghiêm trọng của tình hình tài chính ngân hàng.",
+        "mark": -5
+    },
+    {
+        "title": "UBS hoàn tất thâu tóm Credit Suisse",
+        "date": "12-06-2023",
+        "description": "UBS Group AG đã hoàn tất thương vụ thâu tóm Credit Suisse. Sự kiện này đánh dấu việc Credit Suisse mất đi tư cách là một ngân hàng độc lập và là kết cục của một giai đoạn khó khăn nghiêm trọng, ảnh hưởng tiêu cực sâu sắc đến uy tín và sự tồn tại của Credit Suisse dưới dạng một thực thể riêng biệt.",
+        "mark": -5
+    },
+    {
+        "title": "Credit Suisse được UBS mua lại",
+        "date": "23-03-2023",
+        "description": "Ngân hàng Credit Suisse (NYSE:CS) đã được Ngân hàng UBS mua lại. Thương vụ này được kì vọng sẽ hoàn thành các thủ tục trong năm nay, bao gồm việc UBS bổ nhiệm nhân sự tại Credit Suisse.",    
+        "mark": -5
+    },
+    {
+        "title": "Vốn hóa Credit Suisse thấp hơn đáng kể so với Vietcombank",
+        "date": "17-03-2023",
+        "description": "Vào thời điểm 17/03/2023, vốn hóa của Credit Suisse được ghi nhận chưa bằng một nửa so với Vietcombank, trong bối cảnh thị trường đang lo ngại sau sự sụp đổ của Silicon Valley Bank (SVB). Mặc dù vậy, tài sản của Credit Suisse vẫn lớn hơn tổng tài sản của 28 ngân hàng Việt Nam cộng lại.",
+        "mark": -3
+    },
+    {
+        "title": "Vụ giải cứu Credit Suisse",
+        "date": "22-03-2023",
+        "description": "Đoạn văn mô tả việc Credit Suisse trải qua một cuộc khủng hoảng nghiêm trọng, dẫn đến việc phải được UBS Group giải cứu. Sự kiện này thể hiện sự bất ổn tài chính sâu sắc và sụp đổ niềm tin vào ngân hàng, gây ra thiệt hại lớn cho nhiều bên liên quan và làm suy giảm nghiêm trọng uy tín của Credit Suisse.",
+        "mark": -5
+    },
+    {
+        "title": "Credit Suisse đối mặt nguy cơ thâm hụt vốn 8 tỷ USD",
+        "date": "13-10-2022",
+        "description": "Credit Suisse Group có nguy cơ bị thiếu vốn tới 8 tỷ franc Thuỵ Sĩ (tương đương 8 tỷ USD) vào năm 2024, theo ước tính của các chuyên gia.",
+        "mark": -5
+    },
+    {
+        "title": "Credit Suisse cần được 'giải cứu' gây biến động thị trường",
+        "date": "20-03-2023",
+        "description": "Giá vàng sụt giảm vào ngày 20.3.2023 sau khi có thông tin về việc 'giải cứu' ngân hàng Credit Suisse. Việc một ngân hàng lớn cần được 'giải cứu' cho thấy tình hình tài chính cực kỳ khó khăn, gây mất niềm tin nghiêm trọng từ thị trường và công chúng, ảnh hưởng tiêu cực đến uy tín.",
+        "mark": -5
+    },
+    {
+        "title": "Credit Suisse AG chuyển giao cổ phiếu",
+        "date": "05-04-2019",
+        "description": "Trung tâm Lưu ký Chứng khoán Việt Nam thông báo đã thực hiện chuyển gần 28 triệu cổ phiếu từ Credit Suisse AG cho 6 cá nhân.",
+        "mark": 0
+    },
+    {
+        "title": "Ngân hàng Quốc gia Thụy Sĩ theo dõi chặt chẽ Credit Suisse",
+        "date": "06-10-2022",
+        "description": "Ngân hàng Quốc gia Thụy Sĩ (SNB) đang theo dõi chặt chẽ tình hình tại Credit Suisse. Việc ngân hàng trung ương phải giám sát chặt chẽ một định chế tài chính lớn thường cho thấy có những lo ngại về sự ổn định hoặc khả năng xử lý rủi ro của định chế đó, tạo ra tâm lý bất an trên thị trường và ảnh hưởng tiêu cực đến uy tín.",
+        "mark": -3
+    },
+    {
+        "title": "Credit Suisse: Khủng hoảng gây hoảng loạn khách hàng, cổ phiếu tuần trước tăng giá",
+        "date": "12-10-2022",
+        "description": "Dù giá cổ phiếu Credit Suisse Group AG ghi nhận mức tăng lớn vào tuần trước, khủng hoảng tại ngân hàng này đã bắt đầu gây hoảng loạn cho khách hàng, cho thấy sự suy giảm niềm tin nghiêm trọng.",
+        "mark": -4
+    },
+    {
+        "title": "Credit Suisse bị UBS mua lại trong thương vụ khẩn cấp",
+        "date": "19-03-2023",
+        "description": "Ngân hàng UBS đã chính thức mua lại Credit Suisse với giá 3 tỷ CHF (tương đương 3,2 tỷ USD). Thương vụ này được thực hiện trong bối cảnh khủng hoảng và được hỗ trợ bởi cam kết cho vay 108 tỷ USD từ Ngân hàng Trung ương Thụy Sỹ, cho thấy tình hình tài chính cực kỳ nghiêm trọng của Credit Suisse.",
+        "mark": -5
+    },
+    {
+        "title": "Tích hợp Credit Suisse vào UBS: Công bố năm quan trọng",
+        "date": "15-11-2023",
+        "description": "Giám đốc điều hành UBS, Sergio Ermotti, đã phác thảo những phức tạp liên quan đến vụ sáp nhập lịch sử với Credit Suisse, đánh dấu năm 2024 là năm quan trọng cho quá trình tích hợp. Thông tin này xác nhận rằng Credit Suisse đã mất đi sự độc lập và đang trong quá trình được hợp nhất hoàn toàn vào UBS, một hệ quả trực tiếp từ các vấn đề tài chính và niềm tin đã xảy ra trước đó. Việc đề cập đến sự 'phức tạp' của quá trình này càng nhấn mạnh những thách thức và sự suy yếu đã dẫn đến việc Credit Suisse phải sáp nhập.",
+        "mark": -3
+    },
+    {
+        "title": "UBS cắt giảm việc làm liên quan sáp nhập Credit Suisse",
+        "date": "18-04-2024",
+        "description": "UBS Group AG đang chuẩn bị cắt giảm hơn một trăm vị trí trong lĩnh vực ngân hàng đầu tư toàn cầu như một phần của quá trình hội nhập với Credit Suisse.",
+        "mark": -4
+    },
+    {
+        "title": "Credit Suisse nhận thanh toán trễ từ SpiceJet sau lệnh tòa",
+        "date": "04-12-2023",
+        "description": "SpiceJet đã xác nhận việc thanh toán chậm cho Credit Suisse nhưng đã tuân thủ lệnh của Tòa án Tối cao bằng cách thực hiện khoản thanh toán mới nhất. Điều này cho thấy Credit Suisse đã phải dùng đến pháp lý để thu hồi khoản nợ.",
+        "mark": -3
+    },
+    {
+        "title": "UBS bán đơn vị thế chấp của Credit Suisse tại Mỹ",
+        "date": "14-08-2024",
+        "description": "UBS đã ký thỏa thuận bán bộ phận dịch vụ thế chấp tại Mỹ của Credit Suisse. Đây là một động thái nằm trong quá trình tái cấu trúc và thanh lý tài sản của Credit Suisse sau khi được UBS mua lại.",
+        "mark": -2
+    },
+    {
+        "title": "Khủng hoảng Credit Suisse thúc đẩy FINMA tăng quyền giám sát",
+        "date": "20-12-2023",
+        "description": "Cơ quan Giám sát Thị trường Tài chính Thụy Sĩ (FINMA) kêu gọi mở rộng quyền hạn quản lý sau 'thất bại gần đây' của Credit Suisse, cho thấy sự nghiêm trọng của tình hình ngân hàng.",
+        "mark": -5
+    },
+    {
+        "title": "Credit Suisse lỗ nặng 4 tỷ đô, công bố kế hoạch cải tổ",
+        "date": "27-10-2022",
+        "description": "Credit Suisse ghi nhận khoản lỗ quý 3/2022 vượt xa dự báo của các chuyên gia, lên tới hơn 4 tỷ đô la, đồng thời công bố kế hoạch cải tổ toàn diện. Điều này cho thấy tình hình tài chính của ngân hàng đang rất khó khăn, ảnh hưởng nghiêm trọng đến niềm tin của thị trường và các nhà đầu tư.",
+        "mark": -5
+    },
+    {
+        "title": "UBS thiệt hại lớn từ vụ thâu tóm Credit Suisse",
+        "date": "17-05-2023",
+        "description": "Ngân hàng UBS Group AG dự kiến sẽ chịu khoản phí tài chính lên tới 17 tỷ USD từ việc tiếp quản Credit Suisse. Điều này phản ánh tình hình tài chính cực kỳ yếu kém và các vấn đề nội tại nghiêm trọng của Credit Suisse trước khi bị thâu tóm, gây ra chi phí lớn cho bên mua và làm suy giảm nghiêm trọng uy tín về sự ổn định và quản lý của Credit Suisse.",
+        "mark": -5
+    },
+    {
+        "title": "17 tỷ USD trái phiếu Credit Suisse thành giấy vụn",
+        "date": "20-03-2023",
+        "description": "17 tỷ USD trái phiếu rủi ro của Credit Suisse bị xóa sổ hoàn toàn sau thỏa thuận thâu tóm của UBS, khiến các trái chủ chịu thiệt hại nặng nề. Sự kiện này là một đòn giáng mạnh vào uy tín và niềm tin của nhà đầu tư đối với ngân hàng Credit Suisse.",
+        "mark": -5
+    },
+    {
+        "title": "Sáp nhập hoạt động Credit Suisse Thụy Sĩ vào UBS",
+        "date": "01-07-2024",
+        "description": "UBS đã công bố hoàn tất việc sáp nhập các hoạt động của Credit Suisse tại Thụy Sĩ. Sự kiện này đánh dấu việc Credit Suisse, một trong những ngân hàng lớn nhất Thụy Sĩ, mất đi sự độc lập và thương hiệu tại thị trường nội địa, trở thành một phần của UBS sau giai đoạn khủng hoảng nghiêm trọng.",
+        "mark": -5
+    },
+    {
+        "title": "Credit Suisse cắt giảm nhân sự cấp cao tại châu Á",
+        "date": "15-11-2022",
+        "description": "Credit Suisse bắt đầu cắt giảm nhân sự ngân hàng cấp cao tại châu Á, bao gồm ba giám đốc điều hành mảng ngân hàng đầu tư và tài chính. Động thái này thường cho thấy việc tái cấu trúc hoặc cắt giảm chi phí do áp lực tài chính, tác động tiêu cực đến niềm tin của nhà đầu tư và uy tín của ngân hàng.",
+        "mark": -4
+    },
+    {
+        "title": "Credit Suisse mất giám đốc mảng cổ phiếu tại châu Á",
+        "date": "17-03-2023",
+        "description": "Credit Suisse đang chật vật với sự ra đi của các giám đốc mảng cổ phiếu tại châu Á, điều này diễn ra trong bối cảnh những lo ngại về tình hình tài chính của ngân hàng. Việc mất nhân sự cấp cao cho thấy sự bất ổn và có thể làm suy giảm niềm tin của thị trường.",
+        "mark": -5
+    },
+    {
+        "title": "Quá trình chuyển đổi khách hàng Credit Suisse sang UBS",
+        "date": "25-10-2024",
+        "description": "Giám đốc điều hành UBS Sergio Ermotti thông báo quá trình chuyển đổi khách hàng của Credit Suisse sang UBS dự kiến kéo dài 18 tháng. Sự kiện này thể hiện sự tan rã của Credit Suisse với tư cách là một ngân hàng độc lập và việc các tài sản cốt lõi (khách hàng) của họ đang được sáp nhập vào UBS, ảnh hưởng tiêu cực nghiêm trọng đến uy tín.",
+        "mark": -5
+    },
+    {
+        "title": "Credit Suisse bị UBS thâu tóm và bổ nhiệm CEO",
+        "date": "29-03-2023",
+        "description": "UBS đã bổ nhiệm CEO mới Sergio Ermotti sau thương vụ thâu tóm Credit Suisse. Việc Credit Suisse bị đối thủ chính UBS thâu tóm cho thấy ngân hàng này đã gặp phải khủng hoảng nghiêm trọng, dẫn đến việc mất đi sự độc lập và bản sắc riêng.",
+        "mark": -5
+    },
+    {
+        "title": "Sếp cấp cao Credit Suisse Đông Nam Á đồng loạt rời đi",
+        "date": "20-10-2023",
+        "description": "Một số lãnh đạo ngân hàng phụ trách mảng tài chính tư nhân ở Đông Nam Á của Credit Suisse đang rời đi, tham gia vào làn sóng “di cư” nhân sự cấp cao. Điều này cho thấy sự mất ổn định và chảy máu chất xám tại ngân hàng trong khu vực.",
+        "mark": -4
+    },
+    {
+        "title": "Credit Suisse được dùng làm tham chiếu cho điều khoản xoá sổ trái phiếu AT1",
+        "date": "25-03-2023",
+        "description": "Đoạn văn đề cập rằng trái phiếu AT1 của các ngân hàng châu Á có điều khoản 'xoá sổ' tương tự Credit Suisse. Điều này ngụ ý rằng Credit Suisse đã trải qua hoặc liên quan đến việc kích hoạt điều khoản này, dẫn đến thiệt hại cho nhà đầu tư trái phiếu AT1 của họ. Việc được sử dụng làm ví dụ cho một sự kiện tiêu cực như vậy nhắc lại và củng cố hình ảnh tiêu cực về sự ổn định tài chính và quản trị rủi ro của ngân hàng, ảnh hưởng xấu đến uy tín.",
+        "mark": -4
+    },
+    {
+        "title": "Cổ phiếu Credit Suisse giảm mạnh, Chủ tịch cổ đông lớn nhất từ chức",
+        "date": "28-03-2023",
+        "description": "Cổ phiếu Credit Suisse đã giảm mạnh. Ammar Al Khudairy, Chủ tịch của Ngân hàng Quốc gia Ả-rập Xê-út (SNB) – cổ đông lớn nhất của Credit Suisse, đã từ chức chỉ vài ngày sau khi đưa ra phát biểu gây tranh cãi.",
+        "mark": -5
+    },
+    {
+        "title": "Credit Suisse Cắt Giảm Mạnh Nhân Sự Tại Trung Quốc", 
+        "date": "25-11-2022", 
+        "description": "Credit Suisse dự kiến sa thải ít nhất 1/3 nhân sự của bộ phận ngân hàng đầu tư và khoảng 40% nhân sự của bộ phận nghiên cứu tại Trung Quốc. Việc cắt giảm nhân sự mạnh mẽ này cho thấy sự tái cơ cấu hoặc thu hẹp hoạt động của ngân hàng tại thị trường Trung Quốc, thường được thị trường đánh giá là dấu hiệu tiêu cực về tình hình kinh doanh hoặc chiến lược.", 
+        "mark": -4
+    },
+    {
+        "title": "Credit Suisse cắt giảm 10% nhân sự mảng ngân hàng đầu tư tại châu Âu",
+        "date": "16-01-2023",
+        "description": "Credit Suisse đang trong quá trình chuẩn bị cắt giảm hơn 10% nhân viên mảng ngân hàng đầu tư tại khu vực châu Âu trong năm nay. Động thái này cho thấy áp lực tái cơ cấu hoặc hiệu quả kinh doanh không đạt kỳ vọng trong mảng này.",
+        "mark": -4
+    },
+    {
+        "title": "Trái chủ Credit Suisse nguy cơ mất trắng tài sản",
+        "date": "25-03-2023",
+        "description": "Trái chủ Credit Suisse đối mặt nguy cơ mất trắng tài sản với trái phiếu AT1. Tình huống này đã gây ra nỗi sợ hãi lan rộng về việc mất tiền đối với trái phiếu AT1 của các ngân hàng khác, điển hình là Deutsche Bank, cho thấy mức độ nghiêm trọng của sự bất ổn tài chính và tác động tiêu cực đến niềm tin thị trường.",
+        "mark": -5
+    },
+    {
+        "title": "UBS bị kiện liên quan đến trái phiếu Credit Suisse",
+        "date": "25-04-2024",
+        "description": "UBS đang phải đối mặt với vụ kiện từ quỹ phòng hộ Appaloosa LP, cáo buộc ngân hàng lừa dối các nhà đầu tư trước khi xóa sổ đáng kể trái phiếu Credit Suisse. Vụ kiện này liên quan trực tiếp đến những tổn thất phát sinh từ việc xử lý trái phiếu Credit Suisse sau khi UBS tiếp quản, tiếp tục làm dấy lên những vấn đề tiêu cực xung quanh legacy của Credit Suisse.",
+        "mark": -4
+    },
+    {
+        "title": "Đại hội cổ đông thường niên cuối cùng của Credit Suisse",
+        "date": "04-04-2023",
+        "description": "Chủ tịch Credit Suisse đã phát biểu tại đại hội đồng cổ đông thường niên cuối cùng, điều này ngụ ý mạnh mẽ về sự chấm dứt của ngân hàng với tư cách một thực thể độc lập, một dấu hiệu cực kỳ tiêu cực cho uy tín.",
+        "mark": -5
+    },
+    {
+        "title": "Thụy Sĩ lo ngại về thương vụ Credit Suisse-UBS vội vã",
+        "date": "23-03-2023",
+        "description": "Đoạn văn mô tả sự lo lắng ('vã mồ hôi') của Thụy Sĩ về cuộc sáp nhập 'vội vã' và 'sắp đặt' giữa UBS và Credit Suisse. Điều này ngụ ý rằng Credit Suisse đang trong tình trạng khủng hoảng nghiêm trọng, dẫn đến việc phải được UBS mua lại để tránh đổ vỡ, tạo ra một ngân hàng có quy mô lớn chưa từng thấy. Sự kiện này phản ánh sự suy giảm nghiêm trọng về uy tín và niềm tin đối với Credit Suisse.",        
+        "mark": -5
+    },
+    {
+        "title": "Credit Suisse đối mặt khó khăn, gây lo ngại cho khách hàng vay", 
+        "date": "20-03-2023", 
+        "description": "Bài viết đề cập đến việc Credit Suisse, với tư cách là một chủ nợ lớn, đang đối mặt với các vấn đề nội bộ nghiêm trọng đến mức gây lo ngại cho các khách hàng vay của họ, điển hình là Novaland. Tình hình này ngụ ý rằng uy tín và sự ổn định của Credit Suisse đang bị suy giảm.", 
+        "mark": -5
+    },
+    {
+        "title": "Credit Suisse bị UBS tiếp quản",
+        "date": "05-06-2023",
+        "description": "Ngân hàng UBS thông báo dự kiến hoàn tất việc tiếp quản Credit Suisse sớm nhất vào ngày 12/6/2023. Sự kiện này, diễn ra sau hàng loạt khó khăn tài chính và lo ngại về sự ổn định của Credit Suisse, đánh dấu sự kết thúc tư cách độc lập của một trong những ngân hàng lớn nhất Thụy Sĩ. Việc bị thâu tóm bởi đối thủ đồng hương là dấu hiệu rõ ràng về tình trạng suy yếu nghiêm trọng và uy tín bị tổn hại của Credit Suisse.",
+        "mark": -5
+    },
+    {
+        "title": "Italy đánh giá tác động của Credit Suisse lên hệ thống ngân hàng",
+        "date": "21-03-2023",
+        "description": "Chính phủ Italy đang đánh giá ảnh hưởng từ tình hình của Credit Suisse (và SVB) đến hệ thống ngân hàng quốc gia. Điều này cho thấy những diễn biến tại Credit Suisse được xem là một yếu tố không chắc chắn và có khả năng gây tác động tiêu cực đến ổn định tài chính khu vực, phản ánh tình trạng bất ổn nghiêm trọng của ngân hàng này.",
+        "mark": -4
+    },
+    {
+        "title": "Khủng hoảng Credit Suisse: Cổ phiếu giảm kỷ lục",
+        "date": "15-03-2023",
+        "description": "Cổ phiếu Credit Suisse đã giảm kỷ lục trong phiên giao dịch ngày 15/3, gây ra tình trạng khủng hoảng và khiến chỉ số chứng khoán trung bình của các ngân hàng châu Âu giảm mạnh. Sự việc này làm dấy lên lo ngại về sự ổn định của hệ thống ngân hàng khu vực.",
+        "mark": -5
+    },
+    {
+        "title": "Credit Suisse khôi phục thanh tra giữa bê bối tài khoản liên quan Đức Quốc xã",
+        "date": "05-12-2023",
+        "description": "Credit Suisse đã phục hồi Neil Barofsky làm thanh tra viên sau khi các thượng nghị sĩ Hoa Kỳ xem xét kỹ lưỡng cuộc điều tra của ngân hàng về các tài khoản được cho là có quan hệ với Đức quốc xã trong Thế chiến thứ hai. Việc này diễn ra trong bối cảnh ngân hàng phải đối mặt với áp lực và sự giám sát chặt chẽ về cách thức xử lý các tài khoản nhạy cảm này, làm dấy lên những lo ngại về uy tín và trách nhiệm lịch sử của ngân hàng.",
+        "mark": -4
+    },
+    {
+        "title": "Sự sụp đổ của Credit Suisse",
+        "date": "19-12-2023",
+        "description": "Sau cuộc khủng hoảng và sự sụp đổ của Credit Suisse, dẫn đến việc ngân hàng này bị UBS mua lại, cơ quan quản lý tài chính Thụy Sĩ FINMA đã kêu gọi mở rộng thẩm quyền giám sát để ngăn chặn các sự cố tương tự trong tương lai.",
+        "mark": -5
+    },
+    {
+        "title": "Credit Suisse gây lỗ cho UBS sau thâu tóm",
+        "date": "07-11-2023",
+        "description": "Ngân hàng đầu tư UBS ghi nhận quý lỗ đầu tiên trong gần 6 năm. Nguyên nhân chính được chỉ ra là do thương vụ thâu tóm Credit Suisse, phản ánh gánh nặng tài chính và các vấn đề liên quan đến việc sáp nhập Credit Suisse vào UBS.",
+        "mark": -4
+    },
+    {
+        "title": "UBS báo lỗ quý 3 do sáp nhập Credit Suisse", 
+        "date": "07-11-2023", 
+        "description": "UBS Group đã báo cáo khoản lỗ ròng quý 3 lớn hơn dự kiến, nguyên nhân chính được xác định là do những căng thẳng tài chính phát sinh từ việc tích hợp Credit Suisse. Điều này cho thấy quá trình sáp nhập và gánh nặng từ Credit Suisse đang tác động tiêu cực đáng kể đến kết quả kinh doanh của bên mua.", 
+        "mark": -4
+    },
+    {
+        "title": "FINMA củng cố quyền lực sau khủng hoảng Credit Suisse",
+        "date": "19-12-2023",
+        "description": "Cơ quan Giám sát Thị trường Tài chính Thụy Sĩ (FINMA) đang ủng hộ việc mở rộng quyền hạn pháp lý để tăng cường quản trị và giám sát trong lĩnh vực ngân hàng, sau cuộc khủng hoảng của Credit Suisse và việc ngân hàng này bị UBS tiếp quản.",
+        "mark": -5
+    },
+    {
+        "title": "Cắt giảm nhân sự Credit Suisse sau sáp nhập UBS",
+        "date": "22-01-2025",
+        "description": "Ngân hàng UBS tiếp tục cắt giảm lực lượng lao động sau khi mua lại Credit Suisse, điều này phản ánh quá trình tái cấu trúc và thu hẹp quy mô hoạt động của Credit Suisse sau sáp nhập. Quyết định này đồng nghĩa với việc chấm dứt sự tồn tại của Credit Suisse như một ngân hàng độc lập và gây ra tình trạng mất việc làm cho nhân sự cũ của ngân hàng này.",
+        "mark": -3
+    },
+    {
+        "title": "Trái chủ Credit Suisse phẫn nộ vì mất hàng tỷ USD",
+        "date": "21-03-2023",
+        "description": "Các trái chủ nắm giữ trái phiếu cấp 1 bổ sung của Credit Suisse đã mất hàng tỷ USD sau vụ ngân hàng này bị mua lại, gây ra sự phẫn nộ và mất niềm tin nghiêm trọng.",
+        "mark": -5
+    },
+    {
+        "title": "FINMA đòi lại thưởng sau sụp đổ của Credit Suisse",
+        "date": "30-12-2023",
+        "description": "Cơ quan quản lý tài chính Thụy Sĩ (FINMA) đang tìm kiếm quyền hạn để đòi lại tiền thưởng từ các chủ ngân hàng của Credit Suisse sau sự sụp đổ và việc bán ngân hàng này cho UBS. Điều này phản ánh vấn đề quản lý nghiêm trọng và đòi hỏi trách nhiệm từ các lãnh đạo, gây ảnh hưởng tiêu cực đến uy tín của ngân hàng.",
+        "mark": -5
+    },
+    {
+        "title": "Thái tử Arab Saudi xem xét đầu tư vào Credit Suisse",
+        "date": "06-12-2022",
+        "description": "Thái tử Arab Saudi và một công ty cổ phần tư nhân đang xem xét đầu tư vào mảng ngân hàng đầu tư của Credit Suisse. Điều này cho thấy sự quan tâm và tiềm năng mang lại nguồn vốn cần thiết, góp phần củng cố niềm tin vào ngân hàng.",
+        "mark": 4
+    },
+    {
+        "title": "NHTW Thụy Sỹ nâng lãi suất bất chấp rắc rối của Credit Suisse", 
+        "date": "23-03-2023", 
+        "description": "Ngân hàng Trung ương Thụy Sỹ đã nâng lãi suất 50 điểm cơ bản lên 1.5% vào ngày 23/03/2023. Động thái này được thực hiện bất chấp Credit Suisse đang đối mặt với các rắc rối, cho thấy tình hình bất ổn tại ngân hàng này đang là một vấn đề được quan tâm và ảnh hưởng đến nhận định thị trường.", 
+        "mark": -3
+    },
+    {
+        "title": "Cổ đông lớn Credit Suisse cắt giảm cổ phiếu, ngân hàng đối mặt khó khăn",
+        "date": "14-01-2023",
+        "description": "Cổ đông lớn hàng đầu của Credit Suisse đã cắt giảm cổ phiếu. Ngân hàng đang nỗ lực xoay chuyển tình thế sau nhiều tháng gặp khó khăn, trong đó cổ phiếu của họ trở thành mục tiêu của những người bán khống.",
+        "mark": -5
+    },
+    {
+        "title": "Tòa án Thụy Sĩ bác bỏ cắt giảm tiền thưởng cựu giám đốc Credit Suisse",
+        "date": "14-05-2025",
+        "description": "Một tòa án hàng đầu của Thụy Sĩ đã tuyên bố rằng quyết định của chính phủ Thụy Sĩ về việc cắt giảm và hủy bỏ các khoản tiền thưởng cho các cựu giám đốc của Credit Suisse là trái pháp luật. Phán quyết này có thể làm suy yếu nỗ lực của chính phủ trong việc quy trách nhiệm cho các cựu lãnh đạo sau những vấn đề của ngân hàng.",
+        "mark": -4
+    },
+    {
+        "title": "Credit Suisse cảnh báo tổn thất rất đáng kể từ quỹ đầu cơ",
+        "date": "29-03-2021",
+        "description": "Credit Suisse cảnh báo thiệt hại rất đáng kể đối với kết quả kinh doanh quý đầu tiên của mình, sau khi ngân hàng này bắt đầu thoát khỏi các vị thế tại một quỹ đầu cơ Mỹ, gây ảnh hưởng tiêu cực nghiêm trọng đến uy tín tài chính.",
+        "mark": -5
+    },
+    {
+        "title": "Trái phiếu AT1 của Credit Suisse bị xóa sổ 17 tỷ USD, gây chấn động thị trường", 
+        "date": "16-11-2023", 
+        "description": "Biến động thị trường đã dẫn đến việc xóa sổ 17 tỷ USD trái phiếu cấp 1 (AT1) bổ sung của Credit Suisse. Sự việc này đã khiến người đứng đầu cơ quan giám sát của Ngân hàng Trung ương châu Âu (ECB) phải kêu gọi thống nhất các quy tắc trái phiếu AT1 toàn cầu, cho thấy mức độ nghiêm trọng và ảnh hưởng tiêu cực sâu rộng đến uy tín và niềm tin của nhà đầu tư vào Credit Suisse.", 
+        "mark": -5
+    },
+    {
+        "title": "Credit Suisse mua lại nợ 3 tỷ USD giữa lúc cổ phiếu lao dốc và lo ngại tín dụng",
+        "date": "07-10-2022",
+        "description": "Ngân hàng Credit Suisse đã đề nghị mua lại chứng khoán nợ trị giá 3 tỷ franc Thụy Sĩ (3,03 tỷ USD) vào thứ Sáu, với mục đích điều hướng giá cổ phiếu đang lao dốc và giải quyết các lo ngại về tín dụng. Việc này cho thấy ngân hàng đang đối mặt với những thách thức đáng kể về tài chính và niềm tin thị trường.",
+        "mark": -4
+    },
+    {
+        "title": "UBS cắt giảm việc làm sau sáp nhập Credit Suisse",
+        "date": "27-01-2025",
+        "description": "UBS Group AG đã bắt đầu một loạt cắt giảm việc làm ở Thụy Sĩ, ảnh hưởng đến cả cấp quản lý cao hơn và cấp bậc thấp hơn, theo Bloomberg, sau khi sáp nhập Credit Suisse.",
+        "mark": -4
+    },
+    {
+        "title": "Credit Suisse dự kiến lỗ lớn quý 4/2022 do khách hàng rút vốn", 
+        "date": "26-11-2022", 
+        "description": "Credit Suisse dự kiến lỗ 1.6 tỷ USD trong quý 4/2022 do khách hàng giàu có rút vốn, làm tăng khoản lỗ trước thuế lên 1.5 tỷ franc Thuỵ Sĩ.", 
+        "mark": -5
+    },
+    {
+        "title": "UBS gặp khó khi thanh lý nợ khó khăn của Credit Suisse",
+        "date": "19-01-2024",
+        "description": "UBS Group AG đang thay đổi chiến lược bán nợ khó khăn của Credit Suisse sau khi việc bán tập thể không nhận được phản ứng tích cực, cho thấy các vấn đề về tài sản của Credit Suisse vẫn còn dai dẳng và khó giải quyết.",
+        "mark": -4
+    },
+    {
+        "title": "Credit Suisse Sụp Đổ và Được Giải Cứu",
+        "date": "01-03-2023",
+        "description": "Đoạn văn mô tả sự kiện Credit Suisse sụp đổ và được UBS giải cứu vào khoảng tháng 3/2023. Một năm sau (theo báo cáo ngày 14/03/2024), ngành ngân hàng châu Âu vẫn đang vất vả phục hồi từ sự kiện này, cho thấy tác động tiêu cực và nghiêm trọng của nó.",
+        "mark": -5
+    },
+    {
+        "title": "Credit Suisse xóa nợ AT1 gây cú sốc cho nhà đầu tư",
+        "date": "23-03-2023",
+        "description": "Trong thương vụ UBS mua lại Credit Suisse, ngân hàng này đã xoá nợ 17 tỷ đô la trái phiếu AT1. Sự kiện này khiến giới đầu tư châu Á đứng ngồi không yên và được đánh giá là đã giáng một đòn mạnh vào các ngân hàng và nhà đầu tư, gây mất niềm tin nghiêm trọng.",
+        "mark": -5
+    },
+    {
+        "title": "Chi phí bảo hiểm rủi ro tín dụng Credit Suisse tăng kỷ lục",
+        "date": "16-03-2023",
+        "description": "Chi phí bảo hiểm rủi ro tín dụng (CDS) cho trái phiếu của Credit Suisse đã tăng lên mức cao chưa từng thấy, phản ánh sự gia tăng đáng kể lo ngại của thị trường về khả năng vỡ nợ trong ngắn hạn của ngân hàng.",
+        "mark": -5
+    },
+    {
+        "title": "Quốc hội Thụy Sĩ điều tra vụ thâu tóm Credit Suisse",
+        "date": "09-06-2023",
+        "description": "Quốc hội Thụy Sĩ sẽ điều tra UBS trong thương vụ tiếp quản ngân hàng Credit Suisse đang gặp khó khăn do chính phủ dàn xếp. Việc điều tra một thương vụ sáp nhập được chính phủ dàn xếp của một ngân hàng đang gặp khó khăn cho thấy những vấn đề nghiêm trọng tiềm ẩn và làm suy giảm thêm uy tín của Credit Suisse.",
+        "mark": -5
+    },
+    {
+        "title": "UBS điều chỉnh danh mục cho vay, loại bỏ khoản vay nhiên liệu hóa thạch từ Credit Suisse",
+        "date": "28-03-2024",
+        "description": "Sau sáp nhập, UBS Group AG đang tái cấu trúc danh mục cho vay, hướng tới mở rộng các khoản vay vận chuyển bền vững. Cụ thể, UBS có kế hoạch loại bỏ một số khoản vay liên quan đến nhiên liệu hóa thạch mà họ đã tiếp quản từ Credit Suisse. Điều này cho thấy UBS đang chủ động điều chỉnh danh mục tài sản kế thừa từ Credit Suisse để phù hợp hơn với chiến lược bền vững và các tiêu chuẩn ESG hiện tại, ngụ ý rằng một phần danh mục cũ của Credit Suisse không hoàn toàn phù hợp với định hướng mới của tập đoàn sáp nhập.",
+        "mark": -1
+    },
+    {
+        "title": "UBS thoái vốn mảng kinh doanh sản phẩm chứng khoán hóa của Credit Suisse",
+        "date": "27-03-2024",
+        "description": "UBS đã hoàn tất việc bán mảng kinh doanh sản phẩm chứng khoán hóa của Credit Suisse cho Apollo Global Management, một phần trong chiến lược thoái vốn các tài sản không cốt lõi sau khi mua lại ngân hàng này. Sự kiện này thể hiện quá trình tái cấu trúc và phân mảnh các tài sản của Credit Suisse sau khi bị thâu tóm.",
+        "mark": -2
+    },
+    {
+        "title": "Credit Suisse Dự Báo Kinh Tế Toàn Cầu Tăng Trưởng và Cổ Phiếu Vượt Trội",
+        "date": "24-06-2021",
+        "description": "Ngân hàng đầu tư Thụy Sỹ Credit Suisse dự báo kinh tế toàn cầu sẽ tăng trưởng nhanh hơn trong vài tháng tới và cổ phiếu sẽ tiếp tục vượt trội hơn các tài sản khác.",
+        "mark": 1
+    },
+    {
+        "title": "Credit Suisse bị UBS thâu tóm",
+        "date": "21-03-2023",
+        "description": "Ngân hàng Credit Suisse đã bị UBS mua lại, cho thấy tình trạng tài chính nghiêm trọng của Credit Suisse và dẫn đến việc mất đi tư cách là một định chế độc lập. Mặc dù thị trường châu Á vẫn ổn định sau thương vụ này, nhưng đối với Credit Suisse, đây là một sự kiện cực kỳ tiêu cực, đánh dấu sự kết thúc của một kỷ nguyên.",
+        "mark": -5
+    },
+    {
+        "title": "Credit Suisse dự báo siêu chu kỳ thu nhập tại chứng khoán châu Á",
+        "date": "01-01-1970",
+        "description": "Credit Suisse đưa ra nhận định tích cực về chứng khoán châu Á, dự báo khu vực này sẽ bắt đầu một 'siêu chu kỳ thu nhập' vào năm 2021 và có khả năng vượt trội so với các thị trường toàn cầu. Điều này thể hiện khả năng phân tích và đưa ra triển vọng đầu tư từ phía ngân hàng.",
+        "mark": 4
+    }
+]
