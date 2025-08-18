@@ -80,21 +80,21 @@ def var_model(VNIndex=False, use_granger_selection=False, pca_variance_threshold
     (tùy chọn) chọn exog bằng Granger, fit VAR, kiểm tra residuals.
     """
     # --- đọc dữ liệu ---
-    internal_variables = pd.read_csv(r"data\sliver\internal_data\Internal_Data_Financial_Report.csv", parse_dates=['time'])
+    internal_variables = pd.read_csv(r"data\silver\internal_data\Internal_Data_Financial_Report.csv", parse_dates=['time'])
     internal_variables['time'] = pd.to_datetime(internal_variables['time'], errors='coerce')
 
-    ecb = pd.read_csv(r"data\sliver\macro_economic_data\policy_interest_rate\ECB_INTEREST_RATE_FRED.csv",
+    ecb = pd.read_csv(r"data\silver\macro_economic_data\policy_interest_rate\ECB_INTEREST_RATE_FRED.csv",
                       usecols=["time", "close"], parse_dates=['time']).rename(columns={"close": "ECB_RATE"})
     ecb['time'] = pd.to_datetime(ecb['time'], errors='coerce')
 
-    fed_funds = pd.read_csv(r"data\sliver\macro_economic_data\policy_interest_rate\FED_FUNDS.csv",
+    fed_funds = pd.read_csv(r"data\silver\macro_economic_data\policy_interest_rate\FED_FUNDS.csv",
                             usecols=["time", "close"], parse_dates=['time']).rename(columns={"close": "FED_FUNDS"})
     fed_funds['time'] = pd.to_datetime(fed_funds['time'], errors='coerce')
 
-    folder_macro = r"data\sliver\macro_economic_data\growth_and_inflation"
+    folder_macro = r"data\silver\macro_economic_data\growth_and_inflation"
     growth_inflation = load_and_merge_csv(folder_macro)
 
-    folder_market = r"data\sliver\market_data"
+    folder_market = r"data\silver\market_data"
     files_market = [
         "CBOE_Volatility_Index_FRED.csv",
         "CDS_5Y_CS_1D.csv",
@@ -104,8 +104,12 @@ def var_model(VNIndex=False, use_granger_selection=False, pca_variance_threshold
     ]
     market_data = load_and_merge_csv(folder_market, files_market)
 
+    news_path = r'data\silver\news\news00.csv'
+    sentiment_data = pd.read_csv(news_path)
+    sentiment_data.rename(columns={'date': 'time'}, inplace=True)
+    sentiment_data['time'] = pd.to_datetime(sentiment_data['time'], errors = 'coerce')
     # --- Gom tất cả về df_full ---
-    components = [internal_variables, ecb, fed_funds, growth_inflation, market_data]
+    components = [internal_variables, ecb, fed_funds, growth_inflation, market_data, sentiment_data]
     df_full = None
     for comp in components:
         if df_full is None:
