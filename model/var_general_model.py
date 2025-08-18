@@ -84,9 +84,12 @@ def var_pipeline(
     forecast_steps=30,
     market_files=None
 ):
-    # --- load datasets ---
-        # Chuyển đổi data_root (có thể là string) thành đối tượng Path
-    data_root = data_root / 'data' / 'sliver'
+    """
+    Chạy pipeline: đọc dữ liệu, gộp, kiểm định ADF, sai phân, VIF theo nhóm, PCA khi cần,
+    (tùy chọn) chọn exog bằng Granger, fit VAR, kiểm tra residuals.
+    """
+    # Chuyển đổi data_root (có thể là string) thành đối tượng Path
+    data_root = Path(data_root) / 'data' / 'silver'
 
     # --- load datasets ---
     # Sử dụng toán tử / để nối đường dẫn một cách an toàn
@@ -106,8 +109,6 @@ def var_pipeline(
     growth_inflation = load_and_merge_csv(folder_macro)
 
     folder_market = data_root / 'market_data'
-
-    folder_market = os.path.join(data_root, 'market_data')
     if market_files is None:
         market_files = [
             "CBOE_Volatility_Index_FRED.csv",
@@ -117,6 +118,11 @@ def var_pipeline(
             "VNINDEX_1D.csv"
         ]
     market_data = load_and_merge_csv(folder_market, market_files)
+
+    news_path = data_root / 'news' / 'news00.csv'
+    sentiment_data = pd.read_csv(news_path)
+    sentiment_data.rename(columns={'date': 'time'}, inplace=True)
+    sentiment_data['time'] = pd.to_datetime(sentiment_data['time'], errors = 'coerce')
 
     # If VNIndex=False -> drop VNINDEX_1D everywhere (including market_data)
     if not VNIndex and 'VNINDEX_1D' in market_data.columns:
@@ -128,7 +134,7 @@ def var_pipeline(
         market_data[col] = np.log(market_data[col]).diff()
 
     # --- merge all into df_full ---
-    components = [internal_variables, ecb, fed_funds, growth_inflation, market_data]
+    components = [internal_variables, ecb, fed_funds, growth_inflation, market_data, sentiment_data]
     df_full = None
     for comp in components:
         if comp is None or (isinstance(comp, pd.DataFrame) and comp.shape[0] == 0):
