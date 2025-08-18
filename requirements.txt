@@ -1,6 +1,7 @@
 numpy==2.2.6
 matplotlib==3.10.5
 seaborn 
+statsmodels
 
 # Search Engine
 google==3.0.0
