@@ -5,7 +5,7 @@ import seaborn as sns
 
 # ===================================================================================================
 # Dữ liệu cho phần Credit Suisse
-# Kịch bản 02: Xói mòn niềm tin từ từ
+# Kịch bản 02: Chỉ sinh điểm NLP, xuất file và visualize
 # ===================================================================================================
 
 # --- Hàm 1A: Sinh dữ liệu NLP với xu hướng (TREND) ---
@@ -21,7 +21,6 @@ def generate_nlp_scores_with_trend(start_date: str, num_days: int, prob_news_eve
     for day in range(num_days):
         score = 0
         if np.random.rand() < prob_news_event:
-            # Điểm score được sinh ra từ mean đã được điều chỉnh theo trend
             score = np.random.normal(loc=current_mean, scale=std_dev_score)
         
         data.append({'date': dates[day], 'nlp_score': score})
@@ -30,92 +29,73 @@ def generate_nlp_scores_with_trend(start_date: str, num_days: int, prob_news_eve
         current_mean += trend
         
     df = pd.DataFrame(data)
-    df['nlp_score'] = df['nlp_score'].round().astype(int)
+    df['nlp_score'] = df['nlp_score'].round(1)
     return df
 
-# --- Hàm 2: Sinh dữ liệu CDS ---
-def generate_cds_data(nlp_scores_df: pd.DataFrame, omega: float, phi: float, beta: float, sigma: float, start_cds_value: float):
-    """Sinh dữ liệu CDS spread dựa trên điểm NLP."""
-    nlp_scores = nlp_scores_df['nlp_score'].values
-    num_days = len(nlp_scores)
-    cds_series = np.zeros(num_days)
-    cds_series[0] = start_cds_value
-    for t in range(1, num_days):
-        cds_yesterday = cds_series[t-1]
-        nlp_today = nlp_scores[t]
-        random_shock = np.random.normal(0, sigma)
-        cds_today = omega + (phi * cds_yesterday) - (beta * nlp_today) + random_shock
-        cds_series[t] = max(1, cds_today)
-    result_df = nlp_scores_df.copy()
-    result_df['cds_spread'] = cds_series.round(2)
-    return result_df
-
-# --- Hàm 3: Trực quan hóa ---
-def visualize_combined_data(df: pd.DataFrame, title: str):
-    """Hàm trực quan hóa kết quả với tiêu đề tùy chỉnh."""
-    print("\nĐang tạo biểu đồ kết quả...")
+# --- Hàm 2 (MỚI): Trực quan hóa chỉ điểm NLP ---
+def visualize_nlp_scores(df: pd.DataFrame, title: str):
+    """Hàm trực quan hóa chỉ riêng điểm NLP."""
+    print("\nĐang tạo biểu đồ kết quả NLP...")
     sns.set_theme(style="whitegrid")
     df['date'] = pd.to_datetime(df['date'])
     
-    fig, ax1 = plt.subplots(figsize=(15, 7))
+    fig, ax = plt.subplots(figsize=(15, 7))
     
+    # Tạo màu sắc dựa trên giá trị dương hoặc âm
     colors = ['g' if x >= 0 else 'r' for x in df['nlp_score']]
-    ax1.bar(df['date'], df['nlp_score'], color=colors, alpha=0.5, width=1.2, label='Điểm NLP (Trục trái)')
-    ax1.set_xlabel('Ngày')
-    ax1.set_ylabel('Điểm Sentiment NLP', color='dimgray')
-    ax1.tick_params(axis='y', labelcolor='dimgray')
-    ax1.grid(False)
-
-    ax2 = ax1.twinx()
-    ax2.plot(df['date'], df['cds_spread'], color='darkorange', linewidth=2.5, label='CDS Spread (Trục phải)')
-    ax2.set_ylabel('CDS Spread (Basis Points)', color='darkorange')
-    ax2.tick_params(axis='y', labelcolor='darkorange')
     
-    plt.title(title, fontsize=16, fontweight='bold')
+    # Vẽ biểu đồ cột
+    ax.bar(df['date'], df['nlp_score'], color=colors, alpha=0.7, width=1.0, label='Điểm NLP')
+    
+    # Thêm đường tham chiếu tại y=0
+    ax.axhline(0, color='black', linewidth=0.8, linestyle='--')
+    
+    # Đặt nhãn và tiêu đề
+    ax.set_xlabel('Ngày')
+    ax.set_ylabel('Điểm Sentiment NLP')
+    ax.set_title(title, fontsize=16, fontweight='bold')
+    
     fig.tight_layout()
     plt.show()
 
+
 # =======================================================================
-# == HÀM CHÍNH CHO KỊCH BẢN 02: XÓI MÒN NIỀM TIN TỪ TỪ                ==
+# == HÀM CHÍNH CHO KỊCH BẢN 02 (CHỈ TÍNH NLP)                          ==
 # ========================================================================
-def run_gradual_erosion_scenario():
+def run_gradual_erosion_nlp_only():
     """
-    Chạy mô phỏng cho Kịch bản 02:
-    Niềm tin suy giảm từ từ do tin tức tiêu cực nhỏ, xuất hiện liên tiếp.
-    - Điểm sentiment: Có xu hướng giảm dần theo thời gian.
-    - Phí CDS: Có xu hướng tăng dần theo thời gian.
+    Chạy mô phỏng chỉ để sinh điểm NLP có xu hướng giảm, xuất file và trực quan hóa.
     """
+    np.random.seed(202)
     # --- Bước 1: Set tham số NLP để tạo điểm sentiment có xu hướng GIẢM DẦN ---
     print("Bước 1: Sinh dữ liệu NLP cho kịch bản xói mòn niềm tin...")
     nlp_params_erosion = {
         "start_date": '2021-01-01',
         "num_days": 365 * 2,
-        "prob_news_event": 0.40,      # Tin tức tiêu cực xuất hiện khá thường xuyên
-        "mean_score": 1.5,            # Điểm trung bình ban đầu vẫn còn dương
-        "std_dev_score": 2.5,         # Biến động ở mức vừa phải
-        "trend": -0.008               # QUAN TRỌNG: Mỗi ngày, mean_score giảm 0.008 điểm
+        "prob_news_event": 0.05,
+        "mean_score": 1.5,
+        "std_dev_score": 2.5,
+        "trend": -0.008
     }
     nlp_df = generate_nlp_scores_with_trend(**nlp_params_erosion)
     
-    # --- Bước 2: Set tham số CDS để tạo chỉ số có xu hướng TĂNG DẦN ---
-    print("Bước 2: Sinh dữ liệu CDS tương ứng...")
-    cds_params_erosion = {
-        "omega": 2,                   # Rủi ro cơ sở cao hơn một chút
-        "phi": 0.97,                  # Quán tính vẫn cao nhưng cho phép sự thay đổi diễn ra
-        "beta": 1.8,                  # Tác động của tin tức (cả tốt và xấu) rất mạnh
-        "sigma": 3.5,                 # Nhiễu thị trường cao hơn, bất ổn hơn
-        "start_cds_value": 60         # Bắt đầu từ mức rủi ro an toàn
-    }
-    final_dataset = generate_cds_data(nlp_df, **cds_params_erosion)
+    # --- Bước 2: Xử lý và xuất điểm NLP ra file CSV ---
+    print("\nBước 2: Chuẩn bị và xuất dữ liệu NLP ra file CSV...")
+    output_df = nlp_df.copy()
+    output_df.rename(columns={'nlp_score': 'total_mark'}, inplace=True)
+    output_df['date'] = output_df['date'].dt.strftime('%Y-%m-%d')
     
-    # --- Bước 3: Hiển thị kết quả ---
-    print("\nMô phỏng hoàn tất! Xem trước 5 dòng dữ liệu cuối cùng:")
-    print(final_dataset.tail())
+    file_name = r'src\scenario_generation\scenario_02_nlp.csv'
+    output_df.to_csv(file_name, index=False)
     
-    # Trực quan hóa kết quả
-    title = 'Kịch Bản 02: Xói Mòn Niềm Tin Từ Từ'
-    visualize_combined_data(final_dataset, title)
+    print(f"Đã xuất thành công dữ liệu ra file: {file_name}")
+    print("Xem trước 5 dòng dữ liệu trong file CSV:")
+    print(output_df.head())
 
-# === Chạy Kịch bản 02 ===
+    # --- Bước 3: Trực quan hóa kết quả NLP ---
+    visualize_nlp_scores(nlp_df, title='Biểu đồ Điểm Sentiment NLP (Kịch bản Xói mòn từ từ)')
+
+
+# === Chạy Kịch bản 02 chỉ sinh NLP ===
 if __name__ == "__main__":
-    run_gradual_erosion_scenario()
+    run_gradual_erosion_nlp_only()

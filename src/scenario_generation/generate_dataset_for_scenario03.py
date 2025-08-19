@@ -5,7 +5,7 @@ import seaborn as sns
 
 # ===================================================================================================
 # Dữ liệu cho phần Credit Suisse
-# Kịch bản 03: Cú sốc niềm tin đột ngột
+# Kịch bản 03: Chỉ sinh điểm NLP, xuất file và visualize
 # ===================================================================================================
 
 # --- Hàm 1B: Sinh dữ liệu NLP với một cú sốc (SHOCK) ---
@@ -23,109 +23,90 @@ def generate_nlp_scores_with_shock(start_date: str, num_days: int, prob_news_eve
         if np.random.rand() < prob_news_event:
             # Kiểm tra xem có phải giai đoạn sau cú sốc hay không
             if day < shock_day:
-                # Giai đoạn trước khủng hoảng: tâm lý tích cực
                 score = np.random.normal(loc=mean_score_before, scale=std_dev_before)
             else:
-                # Giai đoạn sau khủng hoảng: tâm lý sụp đổ
                 score = np.random.normal(loc=mean_score_after, scale=std_dev_after)
         data.append({'date': dates[day], 'nlp_score': score})
         
     df = pd.DataFrame(data)
-    df['nlp_score'] = df['nlp_score'].round().astype(int)
+    df['nlp_score'] = df['nlp_score'].round(1)
     return df
 
-# --- Hàm 2: Sinh dữ liệu CDS ---
-def generate_cds_data(nlp_scores_df: pd.DataFrame, omega: float, phi: float, beta: float, sigma: float, start_cds_value: float):
-    """Sinh dữ liệu CDS spread dựa trên điểm NLP."""
-    nlp_scores = nlp_scores_df['nlp_score'].values
-    num_days = len(nlp_scores)
-    cds_series = np.zeros(num_days)
-    cds_series[0] = start_cds_value
-    for t in range(1, num_days):
-        cds_yesterday = cds_series[t-1]
-        nlp_today = nlp_scores[t]
-        random_shock = np.random.normal(0, sigma)
-        cds_today = omega + (phi * cds_yesterday) - (beta * nlp_today) + random_shock
-        cds_series[t] = max(1, cds_today)
-    result_df = nlp_scores_df.copy()
-    result_df['cds_spread'] = cds_series.round(2)
-    return result_df
-
-# --- Hàm 3: Trực quan hóa ---
-def visualize_combined_data(df: pd.DataFrame, title: str, shock_day: int = None):
-    """Hàm trực quan hóa kết quả, có thể vẽ thêm đường chỉ báo cú sốc."""
-    print("\nĐang tạo biểu đồ kết quả...")
+# --- Hàm 2 (MỚI): Trực quan hóa chỉ điểm NLP (có thêm shock_day) ---
+def visualize_nlp_scores(df: pd.DataFrame, title: str, shock_day: int = None):
+    """Hàm trực quan hóa chỉ riêng điểm NLP, có thể vẽ đường chỉ báo cú sốc."""
+    print("\nĐang tạo biểu đồ kết quả NLP...")
     sns.set_theme(style="whitegrid")
     df['date'] = pd.to_datetime(df['date'])
     
-    fig, ax1 = plt.subplots(figsize=(15, 7))
+    fig, ax = plt.subplots(figsize=(15, 7))
     
+    # Tạo màu sắc dựa trên giá trị dương hoặc âm
     colors = ['g' if x >= 0 else 'r' for x in df['nlp_score']]
-    ax1.bar(df['date'], df['nlp_score'], color=colors, alpha=0.5, width=1.2, label='Điểm NLP (Trục trái)')
-    ax1.set_xlabel('Ngày')
-    ax1.set_ylabel('Điểm Sentiment NLP', color='dimgray')
-    ax1.tick_params(axis='y', labelcolor='dimgray')
-    ax1.grid(False)
-
-    ax2 = ax1.twinx()
-    ax2.plot(df['date'], df['cds_spread'], color='red', linewidth=2.5, label='CDS Spread (Trục phải)')
-    ax2.set_ylabel('CDS Spread (Basis Points)', color='red')
-    ax2.tick_params(axis='y', labelcolor='red')
+    
+    # Vẽ biểu đồ cột
+    ax.bar(df['date'], df['nlp_score'], color=colors, alpha=0.7, width=1.0, label='Điểm NLP')
+    
+    # Thêm đường tham chiếu tại y=0
+    ax.axhline(0, color='black', linewidth=0.8, linestyle='--')
     
     # Vẽ đường chỉ báo ngày xảy ra cú sốc
     if shock_day is not None:
         shock_date = df['date'].iloc[0] + pd.Timedelta(days=shock_day)
-        ax1.axvline(x=shock_date, color='black', linestyle='--', linewidth=2, label=f'Ngày xảy ra khủng hoảng (Ngày {shock_day})')
-        ax1.legend(loc='upper left')
+        ax.axvline(x=shock_date, color='black', linestyle='--', linewidth=2, label=f'Ngày xảy ra khủng hoảng (Ngày {shock_day})')
+        ax.legend(loc='upper left')
 
-    plt.title(title, fontsize=16, fontweight='bold')
+    # Đặt nhãn và tiêu đề
+    ax.set_xlabel('Ngày')
+    ax.set_ylabel('Điểm Sentiment NLP')
+    ax.set_title(title, fontsize=16, fontweight='bold')
+    
     fig.tight_layout()
     plt.show()
 
+
 # =======================================================================
-# == HÀM CHÍNH CHO KỊCH BẢN 03: CÚ SỐC NIỀM TIN ĐỘT NGỘT               ==
+# == HÀM CHÍNH CHO KỊCH BẢN 03 (CHỈ TÍNH NLP)                          ==
 # ========================================================================
-def run_sudden_shock_scenario():
+def run_shock_nlp_only_scenario():
     """
-    Chạy mô phỏng cho Kịch bản 03:
-    Một sự kiện lớn gây sụp đổ niềm tin tức thời.
-    - Điểm sentiment: Giảm mạnh đột ngột.
-    - Phí CDS: Tăng vọt tức thời.
+    Chạy mô phỏng chỉ để sinh điểm NLP có cú sốc, xuất file và trực quan hóa.
     """
+    np.random.seed(303)
     # --- Bước 1: Set tham số NLP để tạo một cú sốc tại ngày 500 ---
     print("Bước 1: Sinh dữ liệu NLP cho kịch bản cú sốc...")
     shock_day = 500
     nlp_params_shock = {
         "start_date": '2021-01-01',
         "num_days": 365 * 2,
-        "prob_news_event": 0.45,
+        "prob_news_event": 0.05,
         "shock_day": shock_day,
-        "mean_score_before": 2.0,       # Trước khủng hoảng, mọi thứ khá tốt
+        "mean_score_before": 2.0,
         "std_dev_before": 2.0,
-        "mean_score_after": -4.0,       # QUAN TRỌNG: Sau khủng hoảng, niềm tin sụp đổ
-        "std_dev_after": 2.5            # Sự hoảng loạn làm tăng biến động
+        "mean_score_after": -2.8,
+        "std_dev_after": 5
     }
     nlp_df = generate_nlp_scores_with_shock(**nlp_params_shock)
     
-    # --- Bước 2: Set tham số CDS để phản ứng mạnh với cú sốc ---
-    print("Bước 2: Sinh dữ liệu CDS tương ứng...")
-    cds_params_shock = {
-        "omega": 1.5,
-        "phi": 0.96,
-        "beta": 1.5,                  # QUAN TRỌNG: Tác động của tin tức cực mạnh để tạo ra cú spike
-        "sigma": 3.5,                 # QUAN TRỌNG: Thị trường cực kỳ bất ổn và hoảng loạn
-        "start_cds_value": 55         # Bắt đầu từ mức rủi ro an toàn
-    }
-    final_dataset = generate_cds_data(nlp_df, **cds_params_shock)
+    # --- Bước 2: Xử lý và xuất điểm NLP ra file CSV ---
+    print("\nBước 2: Chuẩn bị và xuất dữ liệu NLP ra file CSV...")
+    output_df = nlp_df.copy()
+    output_df.rename(columns={'nlp_score': 'total_mark'}, inplace=True)
+    output_df['date'] = output_df['date'].dt.strftime('%Y-%m-%d')
     
-    # --- Bước 3: Hiển thị kết quả ---
-    print("\nMô phỏng hoàn tất! Xem trước 5 dòng dữ liệu cuối cùng:")
-    print(final_dataset.tail())
+    file_name = r'src\scenario_generation\scenario_03_nlp.csv'
+    output_df.to_csv(file_name, index=False)
     
-    # Trực quan hóa kết quả
-    title = 'Kịch Bản 03: Cú Sốc Niềm Tin Đột Ngột'
-    visualize_combined_data(final_dataset, title, shock_day=shock_day)
+    print(f"Đã xuất thành công dữ liệu ra file: {file_name}")
+    print("Xem trước 5 dòng dữ liệu trong file CSV:")
+    print(output_df.head())
 
-# === Chạy Kịch bản 03 ===
+    # --- Bước 3: Trực quan hóa kết quả NLP ---
+    visualize_nlp_scores(nlp_df, 
+                         title='Biểu đồ Điểm Sentiment NLP (Kịch bản Cú sốc đột ngột)', 
+                         shock_day=shock_day)
+
+
+# === Chạy Kịch bản 03 chỉ sinh NLP ===
 if __name__ == "__main__":
-    run_sudden_shock_scenario()
+    run_shock_nlp_only_scenario()
