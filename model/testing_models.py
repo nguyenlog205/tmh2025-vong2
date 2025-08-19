@@ -8,6 +8,7 @@ from statsmodels.tsa.stattools import adfuller, grangercausalitytests
 from statsmodels.stats.stattools import jarque_bera
 from statsmodels.stats.diagnostic import acorr_ljungbox
 from statsmodels.stats.outliers_influence import variance_inflation_factor
+from statsmodels.tsa.vector_ar.vecm import coint_johansen # Thêm import cho Johansen test
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 import warnings
@@ -198,3 +199,46 @@ def perform_pca_on_group(X: pd.DataFrame, variance_threshold: float = 0.90, pref
     print(f"PCA: giảm {X_num.shape[1]} -> {n_components} components, explained variance = {explained[n_components-1]:.3f}")
 
     return pca_df, pca, scaler
+
+# *** HÀM MỚI ĐƯỢC THÊM VÀO ***
+def perform_johansen_cointegration_test(df: pd.DataFrame, det_order=0, k_ar_diff=1):
+    """
+    Thực hiện kiểm định đồng tích hợp Johansen.
+    df: DataFrame chứa các biến không dừng (ở dạng gốc, chưa sai phân).
+    Trả về số lượng quan hệ đồng tích hợp (cointegration rank).
+    """
+    print("\n--- Kiểm định Đồng tích hợp Johansen ---")
+    if df.shape[1] < 2:
+        print("Cần ít nhất 2 biến để thực hiện kiểm định Johansen. Bỏ qua.")
+        return 0
+    
+    # Đảm bảo không có giá trị NaN
+    df_test = df.dropna()
+    if df_test.shape[0] < 10: # Cần đủ dữ liệu
+        print("Không đủ dữ liệu sau khi loại bỏ NaN để kiểm định Johansen. Bỏ qua.")
+        return 0
+
+    try:
+        johansen_result = coint_johansen(df_test, det_order, k_ar_diff)
+    except Exception as e:
+        print(f"Lỗi khi chạy kiểm định Johansen: {e}")
+        return 0
+
+    trace_stat = johansen_result.lr1
+    crit_vals = johansen_result.cvt  # Critical values (90%, 95%, 99%)
+
+    print("Trace Statistic:", trace_stat)
+    print("Critical Values (90%, 95%, 99%):")
+    print(crit_vals)
+
+    # Xác định rank (số quan hệ đồng tích hợp)
+    rank = 0
+    for i in range(len(trace_stat)):
+        # So sánh với mức ý nghĩa 95% (cột thứ 2)
+        if trace_stat[i] > crit_vals[i, 1]:
+            rank += 1
+        else:
+            break
+            
+    print(f"=> Kết luận: Tìm thấy {rank} quan hệ đồng tích hợp (ở mức ý nghĩa 5%).")
+    return rank
