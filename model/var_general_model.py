@@ -3,6 +3,7 @@ Pipeline chính cho VAR: var_pipeline.py
 """
 
 import os
+from pathlib import Path
 import pandas as pd
 import numpy as np
 from statsmodels.tsa.api import VAR
@@ -74,216 +75,275 @@ def select_exogenous_by_granger(df_stationary, endogenous_vars, candidate_exogs,
     return selected
 
 
-def var_model(VNIndex=False, use_granger_selection=False, pca_variance_threshold=0.90, vif_threshold=5.0):
+def var_pipeline(
+    data_root,
+    VNIndex=False,
+    use_granger_selection=False,
+    pca_variance_threshold=0.90,
+    vif_threshold=5.0,
+    forecast_steps=30,
+    market_files=None
+):
     """
     Chạy pipeline: đọc dữ liệu, gộp, kiểm định ADF, sai phân, VIF theo nhóm, PCA khi cần,
     (tùy chọn) chọn exog bằng Granger, fit VAR, kiểm tra residuals.
     """
-    # --- đọc dữ liệu ---
-    internal_variables = pd.read_csv(r"data\silver\internal_data\Internal_Data_Financial_Report.csv", parse_dates=['time'])
+    # Chuyển đổi data_root (có thể là string) thành đối tượng Path
+    data_root = Path(data_root) / 'data' / 'silver'
+
+    # --- load datasets ---
+    # Sử dụng toán tử / để nối đường dẫn một cách an toàn
+    internal_path = data_root / 'internal_data' / 'Internal_Data_Financial_Report.csv'
+    internal_variables = pd.read_csv(internal_path, parse_dates=['time'])
     internal_variables['time'] = pd.to_datetime(internal_variables['time'], errors='coerce')
 
-    ecb = pd.read_csv(r"data\silver\macro_economic_data\policy_interest_rate\ECB_INTEREST_RATE_FRED.csv",
-                      usecols=["time", "close"], parse_dates=['time']).rename(columns={"close": "ECB_RATE"})
+    ecb_path = data_root / 'macro_economic_data' / 'policy_interest_rate' / 'ECB_INTEREST_RATE_FRED.csv'
+    ecb = pd.read_csv(ecb_path, usecols=['time', 'close'], parse_dates=['time']).rename(columns={'close': 'ECB_RATE'})
     ecb['time'] = pd.to_datetime(ecb['time'], errors='coerce')
-
-    fed_funds = pd.read_csv(r"data\silver\macro_economic_data\policy_interest_rate\FED_FUNDS.csv",
-                            usecols=["time", "close"], parse_dates=['time']).rename(columns={"close": "FED_FUNDS"})
+    
+    fed_funds_path = data_root / 'macro_economic_data' / 'policy_interest_rate' / 'FED_FUNDS.csv'
+    fed_funds = pd.read_csv(fed_funds_path, usecols=['time', 'close'], parse_dates=['time']).rename(columns={'close': 'FED_FUNDS'})
     fed_funds['time'] = pd.to_datetime(fed_funds['time'], errors='coerce')
 
-    folder_macro = r"data\silver\macro_economic_data\growth_and_inflation"
+    folder_macro = data_root / 'macro_economic_data' / 'growth_and_inflation'
     growth_inflation = load_and_merge_csv(folder_macro)
 
-    folder_market = r"data\silver\market_data"
-    files_market = [
-        "CBOE_Volatility_Index_FRED.csv",
-        "CDS_5Y_CS_1D.csv",
-        "PRICE_CS_1D.csv",
-        "SX7E_STOXX_Banks_EUR_Price.csv",
-        "VNINDEX_1D.csv"
-    ]
-    market_data = load_and_merge_csv(folder_market, files_market)
+    folder_market = data_root / 'market_data'
+    if market_files is None:
+        market_files = [
+            "CBOE_Volatility_Index_FRED.csv",
+            "CDS_5Y_CS_1D.csv",
+            "PRICE_CS_1D.csv",
+            "SX7E_STOXX_Banks_EUR_Price.csv",
+            "VNINDEX_1D.csv"
+        ]
+    market_data = load_and_merge_csv(folder_market, market_files)
 
-    news_path = r'data\silver\news\news00.csv'
+    news_path = data_root / 'news' / 'news00.csv'
     sentiment_data = pd.read_csv(news_path)
     sentiment_data.rename(columns={'date': 'time'}, inplace=True)
     sentiment_data['time'] = pd.to_datetime(sentiment_data['time'], errors = 'coerce')
-    # --- Gom tất cả về df_full ---
+
+    # If VNIndex=False -> drop VNINDEX_1D everywhere (including market_data)
+    if not VNIndex and 'VNINDEX_1D' in market_data.columns:
+        market_data = market_data.drop(columns=['VNINDEX_1D'], errors='ignore')
+
+    # Convert market_data price columns -> log returns
+    market_price_cols = [c for c in market_data.columns if c != 'time']
+    for col in market_price_cols:
+        market_data[col] = np.log(market_data[col]).diff()
+
+    # --- merge all into df_full ---
     components = [internal_variables, ecb, fed_funds, growth_inflation, market_data, sentiment_data]
     df_full = None
     for comp in components:
+        if comp is None or (isinstance(comp, pd.DataFrame) and comp.shape[0] == 0):
+            continue
         if df_full is None:
             df_full = comp.copy()
         else:
-            if comp is None or comp.shape[0] == 0:
-                continue
             if 'time' not in comp.columns:
                 continue
-            df_full = pd.merge(df_full, comp, on="time", how="outer")
+            df_full = pd.merge(df_full, comp, on='time', how='outer')
 
     if df_full is None:
-        raise ValueError("Không có dữ liệu hợp lệ để gộp thành df_full.")
+        raise ValueError('Không có dữ liệu hợp lệ để gộp df_full')
 
     df_full['time'] = pd.to_datetime(df_full['time'], errors='coerce')
     df_full = df_full.sort_values('time').reset_index(drop=True)
 
-    # --- Xác định biến nội/ngoại sinh ---
-    endog_cols = [c for c in market_data.columns if c != 'time']
+    # --- define endogenous (market) and candidate exogenous ---
+    market_cols = [c for c in market_data.columns if c != 'time']
+    endog_cols = market_cols.copy()  # market_data luôn nội sinh
     if not VNIndex and 'VNINDEX_1D' in endog_cols:
         endog_cols = [c for c in endog_cols if c != 'VNINDEX_1D']
 
     candidate_exogs = [c for c in df_full.columns if c not in endog_cols and c != 'time']
     candidate_exogs = [c for c in candidate_exogs if pd.api.types.is_numeric_dtype(df_full[c])]
 
-    print("\n=== Tổng quan biến ===")
-    print(f"Endogenous (market) variables: {endog_cols}")
-    print(f"Candidate exogenous variables: {candidate_exogs}")
+    print('\n=== Tổng quan biến ===')
+    print('Endogenous (market, log-returns):', endog_cols)
+    print('Candidate exogenous variables:', candidate_exogs)
 
-    # --- 1.1 Kiểm định tính dừng ---
-    print("\n*** 1.1. Kiểm định tính dừng trên dữ liệu gốc ***")
+    # --- 1.1 ADF trên tất cả numeric ---
     stationary_vars = []
     non_stationary_vars = []
     numeric_cols = [c for c in df_full.columns if c != 'time' and pd.api.types.is_numeric_dtype(df_full[c])]
-
     for col in numeric_cols:
-        p_val = perform_adf_test(df_full[col], col)
-        if not np.isnan(p_val) and p_val <= 0.05:
+        p = perform_adf_test(df_full[col], col)
+        if not np.isnan(p) and p <= 0.05:
             stationary_vars.append(col)
         else:
             non_stationary_vars.append(col)
+    print('\nDừng:', stationary_vars)
+    print('\nKhông dừng:', non_stationary_vars)
 
-    print("\nDừng:", stationary_vars)
-    print("\nKhông dừng:", non_stationary_vars)
-
-    # --- 1.2 Sai phân bậc 1 cho các biến không dừng ---
-    print("\n*** 1.2. Lấy sai phân bậc 1 và kiểm định lại các biến không dừng ***")
+    # --- 1.2 Diff non-stationary (first difference) ---
     df_diff = df_full.copy()
     for col in non_stationary_vars:
         if pd.api.types.is_numeric_dtype(df_diff[col]):
             df_diff[col] = df_diff[col].diff()
-            _ = perform_adf_test(df_diff[col], f"{col}_diff1")
-        else:
-            print(f"Bỏ diff vì {col} không numeric.")
     df_diff = df_diff.dropna().reset_index(drop=True)
     print(f"\nKích thước df_diff sau dropna: {df_diff.shape}")
 
-    # --- 1.4 Kiểm định đa cộng tuyến theo nhóm & PCA nếu cần ---
-    print("\n*** 1.4. Kiểm định đa cộng tuyến theo nhóm và PCA khi VIF >= threshold ***")
-    # Xác định nhóm: market_data, internal_variables, others
+    # --- 1.4 VIF & PCA cho EXOG GROUPS ONLY (không chạm biến market/endog) ---
     groups = {}
-    market_cols = [c for c in market_data.columns if c != 'time']
     internal_cols = [c for c in internal_variables.columns if c != 'time']
-
     for col in candidate_exogs:
-        if col in market_cols:
-            groups.setdefault('market_data', []).append(col)
-        elif col in internal_cols:
+        if col in internal_cols:
             groups.setdefault('internal_variables', []).append(col)
         else:
             groups.setdefault('others', []).append(col)
 
-    final_exogs = []  # sẽ chứa columns (hoặc tên PCA components) dùng làm exog
-    # tiến hành kiểm tra nhóm từng nhóm
+    final_exogs = []
     for grp_name, grp_cols in groups.items():
         print(f"\nNhóm: {grp_name} (số biến = {len(grp_cols)})")
-        # lọc những biến thực sự có trong df_diff
         grp_cols = [c for c in grp_cols if c in df_diff.columns]
         if len(grp_cols) == 0:
-            print("Không có biến hợp lệ trong df_diff cho nhóm này. Bỏ qua.")
+            print('Không có biến hợp lệ trong df_diff cho nhóm này. Bỏ qua.')
             continue
-
-        # tính VIF trên nhóm
         vif_df = calculate_vif(df_diff[grp_cols])
-        # check max VIF
         max_vif = vif_df['VIF'].max() if not vif_df.empty else 0
         print(f"Max VIF của nhóm {grp_name} = {max_vif:.3f}")
-
         if not vif_df.empty and (max_vif >= vif_threshold) and (len(grp_cols) >= 2):
-            # thực hiện PCA trên nhóm
-            print(f"Thực hiện PCA cho nhóm {grp_name} vì max VIF >= {vif_threshold}")
-            pca_df, pca_obj, scaler = perform_pca_on_group(df_diff[grp_cols], variance_threshold=pca_variance_threshold, prefix=grp_name + "_PCA")
+            print(f"Thực hiện PCA cho {grp_name} vì max VIF >= {vif_threshold}")
+            pca_df, pca_obj, scaler = perform_pca_on_group(df_diff[grp_cols], variance_threshold=pca_variance_threshold, prefix=grp_name + '_PCA')
             if pca_df is not None and not pca_df.empty:
-                # Align index: pca_df index = subset index after dropna inside PCA; chúng ta cần nối pca_df vào df_diff theo index
-                # Vì df_diff đã dropna toàn bộ, pca_df index phải phù hợp (row counts equal). Safer: reset index and concat.
                 pca_df = pca_df.reset_index(drop=True)
-                # drop original columns from df_diff and append pca columns (we operate on copy)
                 df_diff = df_diff.reset_index(drop=True)
                 df_diff = df_diff.drop(columns=grp_cols, errors='ignore')
-                # concat pca components to df_diff
                 df_diff = pd.concat([df_diff, pca_df], axis=1)
-                # add pca columns to final_exogs
                 final_exogs.extend(list(pca_df.columns))
             else:
-                # fallback: nếu PCA thất bại, giữ nguyên biến
-                print(f"PCA không tạo được components cho nhóm {grp_name}, giữ nguyên biến gốc.")
+                print('PCA thất bại -> giữ nguyên biến gốc')
                 final_exogs.extend(grp_cols)
         else:
-            # không cần PCA, dùng nguyên nhóm
             print(f"Không cần PCA cho nhóm {grp_name}.")
             final_exogs.extend(grp_cols)
 
-    # Điều chỉnh loại bỏ VNINDEX_1D nếu cần
+    # ensure VNINDEX removed from exogs if VNIndex=False
     if not VNIndex and 'VNINDEX_1D' in final_exogs:
         final_exogs = [c for c in final_exogs if c != 'VNINDEX_1D']
 
-    # ensure uniqueness and only keep existing columns in df_diff
     final_exogs = [c for c in dict.fromkeys(final_exogs) if c in df_diff.columns]
-
     print(f"\nFinal exogenous variables after grouping/PCA: {final_exogs}")
 
-    # --- (Tùy chọn) chọn bằng Granger trên df_diff (đã dừng) ---
-    if use_granger_selection:
-        print("\n*** 1.5. Chọn biến ngoại sinh bằng Granger causality (tùy chọn) ***")
-        chosen_by_granger = select_exogenous_by_granger(df_diff, endog_cols, final_exogs, max_lag=4)
-        if len(chosen_by_granger) > 0:
-            print("Biến chọn bởi Granger (ghi đè):", chosen_by_granger)
-            final_exogs = chosen_by_granger
+    # optional Granger selection (on df_diff)
+    if use_granger_selection and len(final_exogs) > 0:
+        print('\n*** Chọn exog bằng Granger causality (tùy chọn) ***')
+        chosen = []
+        for ex in final_exogs:
+            for end in endog_cols:
+                if ex not in df_diff.columns or end not in df_diff.columns:
+                    continue
+                _, any_sig = perform_granger_causality_test(df_diff, response_var=end, predictor_var=ex, max_lag=4)
+                if any_sig:
+                    chosen.append(ex)
+                    break
+        chosen = list(dict.fromkeys(chosen))
+        if len(chosen) > 0:
+            print('Biến chọn bởi Granger (ghi đè):', chosen)
+            final_exogs = chosen
         else:
-            print("Không tìm thấy biến ngoại sinh nào có quan hệ Granger -> giữ final_exogs hiện tại.")
+            print('Không tìm thấy exog đáng kể theo Granger -> giữ nguyên final_exogs')
 
     # -----------------------
-    # PHA 2: Xây dựng mô hình VAR
+    # PHA 2: Xây VAR
     # -----------------------
     endog_data_for_var = df_diff[endog_cols] if len(endog_cols) > 0 else pd.DataFrame()
     exog_data_for_var = df_diff[final_exogs] if len(final_exogs) > 0 else None
 
-    if endog_data_for_var.shape[0] < 5:
-        raise ValueError("Dữ liệu nội sinh sau xử lý quá ít để ước lượng VAR.")
+    if endog_data_for_var.shape[0] < 10:
+        raise ValueError('Dữ liệu nội sinh sau xử lý quá ít (ít hơn 10 hàng).')
 
-    print("\n*** 2.1. Lựa chọn độ trễ p tối ưu ***")
+    print('\n*** Lựa chọn độ trễ p tối ưu ***')
     model = VAR(endog_data_for_var, exog=exog_data_for_var)
-    lag_selection = model.select_order(maxlags=4)
-    print("Order selection:\n", lag_selection.summary())
+    lag_selection = model.select_order(maxlags=8)
     try:
         optimal_lag = int(lag_selection.aic)
     except Exception:
-        optimal_lag = 1
-    print(f"=> Độ trễ tối ưu (theo AIC) = {optimal_lag}")
+        try:
+            optimal_lag = int(getattr(lag_selection, 'aic') if hasattr(lag_selection, 'aic') else 1)
+        except Exception:
+            optimal_lag = 1
+    optimal_lag = max(1, optimal_lag)
+    print('Order selection summary:\n', lag_selection.summary())
+    print(f'=> Độ trễ tối ưu = {optimal_lag}')
 
-    print("\n*** 2.2. Fit mô hình VAR ***")
+    print('\n*** Fit VAR ***')
     results = model.fit(optimal_lag)
     print(results.summary())
 
     # -----------------------
-    # PHA 3: Diagnostics
+    # Diagnostics
     # -----------------------
-    print("\n*** 3.1. Kiểm định tự tương quan phần dư (Ljung-Box) ***")
+    print('\n*** Diagnostics: Ljung-Box (resid) ***')
     residuals = results.resid
-    ljung_results = perform_ljungbox_test(residuals, lags=optimal_lag + 1)
+    ljung = perform_ljungbox_test(residuals, lags=optimal_lag + 1)
+    print('\n*** Diagnostics: Jarque-Bera (resid) ***')
+    jb = perform_jarque_bera_test(residuals)
 
-    print("\n*** 3.2. Kiểm định phân phối chuẩn phần dư (Jarque-Bera) ***")
-    jb_results = perform_jarque_bera_test(residuals)
-
-    print("\n=== Hoàn tất pipeline VAR ===")
+    # Stability check
     try:
-        irf = results.irf(10)
-        irf.plot(orth=False)
-        print("IRF plotted (nếu môi trường hỗ trợ đồ họa).")
+        stability = results.is_stable()
+        print('\nModel stability (is_stable):', stability)
+    except Exception:
+        try:
+            roots = results.roots
+            print('\nCharacteristic roots (abs):', np.abs(roots))
+        except Exception:
+            pass
+
+    # IRF & FEVD
+    try:
+        irf = results.irf(forecast_steps)
+        print('\nIRF object created (steps=', forecast_steps, ')')
     except Exception as e:
-        print(f"Không thể vẽ IRF: {e}")
+        print('Không thể tạo IRF:', e)
+        irf = None
+    try:
+        fevd = results.fevd(forecast_steps)
+        print('FEVD object created (steps=', forecast_steps, ')')
+    except Exception as e:
+        print('Không thể tạo FEVD:', e)
+        fevd = None
 
-    return df_full, df_diff, results
+    # Forecast (30 days) - if exog present, create exog_future by repeating last observed exog row
+    steps = forecast_steps
+    try:
+        last_obs = endog_data_for_var.values[-results.k_ar:]
+    except Exception:
+        last_obs = endog_data_for_var.values[-1:]
+    forecast_vals = None
+    future_index = None
+    try:
+        if exog_data_for_var is None:
+            fc = results.forecast(y=last_obs, steps=steps)
+        else:
+            last_exog = exog_data_for_var.values[-1]
+            exog_future = np.tile(last_exog.reshape(1, -1), (steps, 1))
+            try:
+                fc = results.forecast(y=last_obs, steps=steps, exog_future=exog_future)
+            except TypeError:
+                # older/newer statsmodels interface fallback
+                fc = results.forecast(y=last_obs, steps=steps)
+        forecast_vals = fc
+        # build future dates as daily sequence after last df_diff time
+        last_time = df_diff['time'].iloc[-1]
+        future_index = pd.date_range(last_time + pd.Timedelta(days=1), periods=steps, freq='D')
+        forecast_df = pd.DataFrame(forecast_vals, columns=endog_cols, index=future_index)
+        print(f"\nForecast (next {steps} days) created.\n")
+    except Exception as e:
+        print('Không thể dự báo:', e)
+        forecast_df = pd.DataFrame()
 
-
-if __name__ == "__main__":
-    df_full, df_diff, results = var_model(VNIndex=False, use_granger_selection=True, pca_variance_threshold=0.90, vif_threshold=5.0)
+    # return everything useful
+    return {
+        'df_full': df_full,
+        'df_diff': df_diff,
+        'results': results,
+        'forecast': forecast_df,
+        'irf': irf,
+        'fevd': fevd,
+        'final_exogs': final_exogs
+    }

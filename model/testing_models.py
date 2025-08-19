@@ -20,7 +20,6 @@ def perform_adf_test(series: pd.Series, series_name: str):
     Thực hiện kiểm định ADF. Trả về p-value.
     In ra kết quả tóm tắt.
     """
-    print(f"\n--- Kết quả kiểm định ADF cho chuỗi '{series_name}' ---")
     try:
         adf_test = adfuller(series.dropna(), autolag='AIC')
     except Exception as e:
@@ -31,8 +30,6 @@ def perform_adf_test(series: pd.Series, series_name: str):
                            index=['Test Statistic', 'p-value', '#Lags Used', 'Number of Observations Used'])
     for key, value in adf_test[4].items():
         adf_output[f'Critical Value ({key})'] = value
-
-    print(adf_output)
     p_value = adf_test[1]
     return p_value
 
