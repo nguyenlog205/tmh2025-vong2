@@ -39,7 +39,7 @@ def process_dataset(dataset: pd.DataFrame):
     processed_df = aggregated_df.reindex(full_date_range)
     
     # Điền giá trị còn thiếu bằng giá trị từ ngày gần nhất trong quá khứ (ffill)
-    processed_df.fillna(method='ffill', inplace=True)
+    processed_df.fillna(0, inplace=True)
     
     # Đổi tên cột index thành 'date' và reset index để đưa 'date' thành cột thông thường
     processed_df.index.name = 'date'
