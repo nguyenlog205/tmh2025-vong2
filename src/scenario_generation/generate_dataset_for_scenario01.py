@@ -63,8 +63,8 @@ def run_nlp_only_scenario():
     # --- Bước 1: Set tham số NLP để tạo điểm sentiment ---
     print("Bước 1: Sinh dữ liệu NLP cho kịch bản cơ sở...")
     nlp_params_baseline = {
-        "start_date": '2021-01-01',
-        "num_days": 365 * 2,
+        "start_date": '2020-10-01',
+        "num_days": 1003,
         "prob_news_event": 0.05,
         "mean_score": 2,
         "std_dev_score": 3

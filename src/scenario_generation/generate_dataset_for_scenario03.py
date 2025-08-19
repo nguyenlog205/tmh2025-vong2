@@ -77,8 +77,8 @@ def run_shock_nlp_only_scenario():
     print("Bước 1: Sinh dữ liệu NLP cho kịch bản cú sốc...")
     shock_day = 500
     nlp_params_shock = {
-        "start_date": '2021-01-01',
-        "num_days": 365 * 2,
+        "start_date": '2020-10-01',
+        "num_days": 1003,
         "prob_news_event": 0.05,
         "shock_day": shock_day,
         "mean_score_before": 2.0,
