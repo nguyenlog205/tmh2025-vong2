@@ -70,8 +70,8 @@ def run_gradual_erosion_nlp_only():
     # --- Bước 1: Set tham số NLP để tạo điểm sentiment có xu hướng GIẢM DẦN ---
     print("Bước 1: Sinh dữ liệu NLP cho kịch bản xói mòn niềm tin...")
     nlp_params_erosion = {
-        "start_date": '2021-01-01',
-        "num_days": 365 * 2,
+        "start_date": '2020-10-01',
+        "num_days": 1003,
         "prob_news_event": 0.05,
         "mean_score": 1.5,
         "std_dev_score": 2.5,
