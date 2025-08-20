@@ -26,27 +26,36 @@ def generate_nlp_scores(start_date: str, num_days: int, prob_news_event: float, 
 # ==================================================================
 # == HÀM 2 (MỚI): Trực quan hóa chỉ điểm NLP                       ==
 # ==================================================================
-def visualize_nlp_scores(df: pd.DataFrame, title: str):
-    """Hàm trực quan hóa chỉ riêng điểm NLP."""
-    print("\nĐang tạo biểu đồ kết quả NLP...")
+def visualize_nlp_scores(df: pd.DataFrame, title: str, shock_day: int = None, window: int = 20):
+    """
+    Trực quan hóa điểm NLP bằng đường trung bình trượt để làm rõ xu hướng.
+    """
+    print(f"\nĐang tạo biểu đồ với đường trung bình trượt (cửa sổ {window} ngày)...")
     sns.set_theme(style="whitegrid")
     df['date'] = pd.to_datetime(df['date'])
     
+    # Tính toán đường trung bình trượt
+    df['rolling_avg'] = df['nlp_score'].rolling(window=window, center=True, min_periods=1).mean()
+    
     fig, ax = plt.subplots(figsize=(15, 7))
     
-    # Tạo màu sắc dựa trên giá trị dương hoặc âm
-    colors = ['g' if x >= 0 else 'r' for x in df['nlp_score']]
+    # Vẽ các điểm dữ liệu gốc dưới dạng cột mờ
+    # colors = ['g' if x >= 0 else 'r' for x in df['nlp_score']]
+    # ax.bar(df['date'], df['nlp_score'], color=colors, alpha=0.2, width=1.0, label='Điểm NLP Gốc (hàng ngày)')
     
-    # Vẽ biểu đồ cột
-    ax.bar(df['date'], df['nlp_score'], color=colors, alpha=0.7, width=1.0, label='Điểm NLP')
+    # Vẽ đường trung bình trượt
+    ax.plot(df['date'], df['rolling_avg'], color='blue', linewidth=2.5, label=f'Trung bình trượt {window} ngày')
     
-    # Thêm đường tham chiếu tại y=0
+    # Thêm các đường và nhãn
     ax.axhline(0, color='black', linewidth=0.8, linestyle='--')
-    
-    # Đặt nhãn và tiêu đề
+    if shock_day is not None:
+        shock_date = df['date'].iloc[0] + pd.Timedelta(days=shock_day)
+        ax.axvline(x=shock_date, color='black', linestyle='--', linewidth=2, label=f'Ngày xảy ra khủng hoảng (Ngày {shock_day})')
+
     ax.set_xlabel('Ngày')
     ax.set_ylabel('Điểm Sentiment NLP')
     ax.set_title(title, fontsize=16, fontweight='bold')
+    ax.legend()
     
     fig.tight_layout()
     plt.show()
